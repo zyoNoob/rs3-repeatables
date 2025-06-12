@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuneScape 3 Repeatables Checklist</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --background-color: #ecf0f1;
+            --card-background: #ffffff;
+            --text-color: #2c3e50;
+            --border-color: #bdc3c7;
+            --completed-bg: #d5f4e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            background: var(--background-color);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success-color), #2ecc71);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .section-header h2 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+
+        .section-emoji {
+            font-size: 1.5em;
+        }
+
+        .subsection {
+            margin-bottom: 25px;
+        }
+
+        .subsection h3 {
+            font-size: 1.3em;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .subsection h3::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: var(--secondary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .task-item:hover {
+            background: #f8f9fa;
+            border-color: var(--border-color);
+        }
+
+        .task-item.completed {
+            background: var(--completed-bg);
+            opacity: 0.8;
+        }
+
+        .task-checkbox {
+            margin-right: 12px;
+            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--success-color);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-name {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .task-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            margin-left: 8px;
+        }
+
+        .task-link:hover {
+            text-decoration: underline;
+        }
+
+        .task-note {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-left: 8px;
+        }
+
+        .subtask-list {
+            margin-top: 8px;
+            margin-left: 20px;
+        }
+
+        .subtask-item {
+            margin-bottom: 6px;
+            padding: 6px;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 30px 0;
+        }
+
+        .notes-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .notes-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .notes-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .note-item {
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--background-color);
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .reset-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 20px;
+            transition: background 0.2s ease;
+        }
+
+        .reset-button:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section-header h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏰 RuneScape 3 Repeatables</h1>
+            <p>Track your daily, weekly, and monthly tasks efficiently</p>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Complete (0/0 tasks)</div>
+            <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+
+        <div class="content">
+            <!-- Monthly Tasks -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">📅</span>
+                    <h2>Monthly Tasks</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-slomon">
+                        <div class="task-content">
+                            <span class="task-name">Slomon's Store</span>
+                            <a href="https://secure.runescape.com/m=mtxn_rs_shop/index?jptg=ia&jptv=sgs_page#category/FreeItem" class="task-link" target="_blank">Microtransaction Shop</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-premier">
+                        <div class="task-content">
+                            <span class="task-name">Premier Vault</span>
+                            <a href="https://runescape.wiki/w/Premier_Club_Vault" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-oyster">
+                        <div class="task-content">
+                            <span class="task-name">Giant Oyster</span>
+                            <a href="https://runescape.wiki/w/Giant_Oyster" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-troll">
+                        <div class="task-content">
+                            <span class="task-name">Troll Invasion</span>
+                            <a href="https://runescape.wiki/w/Troll_Invasion" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-statues">
+                        <div class="task-content">
+                            <span class="task-name">God Statues</span>
+                            <a href="https://runescape.wiki/w/God_Statues" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-effigy">
+                        <div class="task-content">
+                            <span class="task-name">Effigy Incubator</span>
+                            <a href="https://runescape.wiki/w/Effigy_Incubator" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="monthly-pyroclasts">
+                        <div class="task-content">
+                            <span class="task-name">Add Infernus Pyroclasts</span>
+                            <span class="task-note">for Ultracompost</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Weekly Tasks -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">📅</span>
+                    <h2>Weekly Tasks</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-citadel">
+                        <div class="task-content">
+                            <span class="task-name">Cap Clan Citadel</span>
+                            <a href="https://runescape.wiki/w/Clan_Citadel" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-thalmund">
+                        <div class="task-content">
+                            <span class="task-name">Thalmund's Wares</span>
+                            <a href="https://runescape.wiki/w/Thalmund%27s_Wares" class="task-link" target="_blank">Wiki Guide</a>
+                            <span class="task-note">(Wednesday)</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-aquarium">
+                        <div class="task-content">
+                            <span class="task-name">Aquarium Treasure Chest</span>
+                            <a href="https://runescape.wiki/w/Treasure_chest_decoration" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-meg">
+                        <div class="task-content">
+                            <span class="task-name">Meg's Questions</span>
+                            <a href="https://runescape.wiki/w/Meg#Meg's_questions" class="task-link" target="_blank">Wiki Guide</a>
+                            <span class="task-note">(Use Arc Journal)</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-water">
+                        <div class="task-content">
+                            <span class="task-name">Water Filtration</span>
+                            <a href="https://runescape.wiki/w/Water_filtration_system" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-tears">
+                        <div class="task-content">
+                            <span class="task-name">Tears of Guthix</span>
+                            <a href="https://runescape.wiki/w/Tears_of_Guthix" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-herby">
+                        <div class="task-content">
+                            <span class="task-name">Herby Werby</span>
+                            <a href="https://runescape.wiki/w/Herby_Werby" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-penguin">
+                        <div class="task-content">
+                            <span class="task-name">Penguin Hide and Seek</span>
+                            <a href="http://2016.world60pengs.com/" class="task-link" target="_blank">World 60 Pengs</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-shattered">
+                        <div class="task-content">
+                            <span class="task-name">Shattered Worlds Challenges</span>
+                            <a href="https://runescape.wiki/w/Shattered_Worlds" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-familiar">
+                        <div class="task-content">
+                            <span class="task-name">Familiarisation</span>
+                            <a href="https://runescape.wiki/w/Familiarisation" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-skeletal">
+                        <div class="task-content">
+                            <span class="task-name">Skeletal Horror</span>
+                            <a href="https://runescape.wiki/w/Skeletal_horror" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-agoroth">
+                        <div class="task-content">
+                            <span class="task-name">Agoroth</span>
+                            <a href="https://runescape.wiki/w/Agoroth" class="task-link" target="_blank">Wiki Guide</a>
+                            <span class="task-note">(2x per week)</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-broken">
+                        <div class="task-content">
+                            <span class="task-name">Replay Broken Home</span>
+                            <a href="https://runescape.wiki/w/Broken_Home/Quick_guide" class="task-link" target="_blank">Quick Guide</a>
+                            <span class="task-note">(No death speed run <37 min, max 1 food)</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-rush">
+                        <div class="task-content">
+                            <span class="task-name">Rush of Blood</span>
+                            <a href="https://runescape.wiki/w/Rush_of_Blood" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="weekly-gwd2">
+                        <div class="task-content">
+                            <span class="task-name">GWD2 Bounties</span>
+                            <a href="https://runescape.wiki/w/Feng,_the_Bounty_Master" class="task-link" target="_blank">Feng, the Bounty Master</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Daily Tasks -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">📅</span>
+                    <h2>Daily Tasks</h2>
+                </div>
+
+                <!-- Time-gated Dailies -->
+                <div class="subsection">
+                    <h3>⏰ Time-gated Dailies</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-dsf">
+                            <div class="task-content">
+                                <span class="task-name">DSF Merchant</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-star">
+                            <div class="task-content">
+                                <span class="task-name">Shooting Star D&D</span>
+                                <span class="task-note">'Starfind' FC</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-obelisk">
+                            <div class="task-content">
+                                <span class="task-name">Menaphos Obelisks</span>
+                                <a href="https://runescape.wiki/w/Soul_obelisk_(Menaphos)" class="task-link" target="_blank">Soul Obelisk Guide</a>
+                                <span class="task-note">'SoulObby' FC</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-cache">
+                            <div class="task-content">
+                                <span class="task-name">Guthixian Cache</span>
+                                <a href="https://runescape.wiki/w/Guthixian_Cache" class="task-link" target="_blank">Wiki Guide</a>
+                                <span class="task-note">(2x daily)</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-sinkhole">
+                            <div class="task-content">
+                                <span class="task-name">Sinkholes</span>
+                                <a href="https://runescape.wiki/w/Sinkholes" class="task-link" target="_blank">Wiki Guide</a>
+                                <span class="task-note">(2x daily)</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-runesphere">
+                            <div class="task-content">
+                                <span class="task-name">Runesphere</span>
+                                <a href="https://runescape.wiki/w/Runesphere" class="task-link" target="_blank">Wiki Guide</a>
+                                <span class="task-note">(25K XP)</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-wilderness">
+                            <div class="task-content">
+                                <span class="task-name">Wilderness Flash Events</span>
+                                <a href="https://runescape.wiki/w/Wilderness_flash_events" class="task-link" target="_blank">Wiki Guide</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Non-Time-gated Dailies -->
+                <div class="subsection">
+                    <h3>🔄 Non-Time-gated Dailies</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-reaper">
+                            <div class="task-content">
+                                <span class="task-name">Soul Reaper Task</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-ports">
+                            <div class="task-content">
+                                <span class="task-name">Player-owned Ports</span>
+                                <a href="https://runescape.wiki/w/Player-owned_port" class="task-link" target="_blank">Port Guide</a>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-fixate">
+                            <div class="task-content">
+                                <span class="task-name">Fixate Charges</span>
+                                <span class="task-note">3x Daily (Red Rum Relics II / III)</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-nemi">
+                            <div class="task-content">
+                                <span class="task-name">Nemi Forest</span>
+                                <a href="https://runescape.wiki/w/Nemi_Forest" class="task-link" target="_blank">Wiki Guide</a>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-chinchompa">
+                            <div class="task-content">
+                                <span class="task-name">Big Chinchompa</span>
+                                <a href="https://runescape.wiki/w/Big_Chinchompa" class="task-link" target="_blank">Wiki Guide</a>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-fish">
+                            <div class="task-content">
+                                <span class="task-name">Fish Flingers</span>
+                                <a href="https://runescape.wiki/w/Fish_Flingers" class="task-link" target="_blank">Wiki Guide</a>
+                                <span class="task-note">(2x entry tickets)</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-arc">
+                            <div class="task-content">
+                                <span class="task-name">Arc Contracts</span>
+                                <a href="https://runescape.wiki/w/Contract" class="task-link" target="_blank">Contract Guide</a>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-bolts">
+                            <div class="task-content">
+                                <span class="task-name">Bakriminel Bolts</span>
+                                <a href="https://runescape.wiki/w/Money_making_guide/Fletching_bakriminel_bolts" class="task-link" target="_blank">Money Making Guide</a>
+                                <span class="task-note">(Every 6 hours)</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Infrequent Dailies -->
+                <div class="subsection">
+                    <h3>📉 Infrequent Dailies</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-mazcab">
+                            <div class="task-content">
+                                <span class="task-name">Liberation of Mazcab Raids</span>
+                                <a href="https://runescape.wiki/w/Liberation_of_Mazcab" class="task-link" target="_blank">Raid Guide</a>
+                                <span class="task-note">'Raid FC' every 2 days</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-phoenix">
+                            <div class="task-content">
+                                <span class="task-name">Phoenix Lair</span>
+                                <a href="https://runescape.wiki/w/Phoenix_Lair" class="task-link" target="_blank">Wiki Guide</a>
+                                <span class="task-note">(Time consuming)</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="daily-bork">
+                            <div class="task-content">
+                                <span class="task-name">Bork</span>
+                                <a href="https://runescape.wiki/w/Bork" class="task-link" target="_blank">Wiki Guide</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Fort Forinthry Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">🏰</span>
+                    <h2>Start at Fort Forinthry</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-challenges">
+                        <div class="task-content">
+                            <span class="task-name">Daily Challenges</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-jack">
+                        <div class="task-content">
+                            <span class="task-name">Jack of All Trades</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-miscellania">
+                        <div class="task-content">
+                            <span class="task-name">Miscellania</span>
+                            <a href="https://runescape.wiki/w/Calculator:Other/Miscellania" class="task-link" target="_blank">Calculator</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-archaeology">
+                        <div class="task-content">
+                            <span class="task-name">Archaeology Research</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-bonus-xp">
+                        <div class="task-content">
+                            <span class="task-name">Fort Forinthry Bonus XP</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-kitchen">
+                        <div class="task-content">
+                            <span class="task-name">Fort Forinthry Kitchen Supplies</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-herblore">
+                        <div class="task-content">
+                            <span class="task-name">Fort Forinthry Herblore Supplies</span>
+                            <div class="subtask-list">
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="fort-vials">
+                                    <span class="task-name">Vials</span>
+                                </div>
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="fort-eye-newt">
+                                    <span class="task-name">Eye of newt</span>
+                                </div>
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="fort-herb-supplies">
+                                    <span class="task-name">Herblore supplies</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-invention">
+                        <div class="task-content">
+                            <span class="task-name">Invention Machines</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-helms">
+                        <div class="task-content">
+                            <span class="task-name">Modified Skilling Helms Collection</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-auras">
+                        <div class="task-content">
+                            <span class="task-name">Activate Premier XP Boost and Wisdom Aura</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-char">
+                        <div class="task-content">
+                            <span class="task-name">Book of Char</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="fort-serenity">
+                        <div class="task-content">
+                            <span class="task-name">Priff Serenity Posts</span>
+                            <span class="task-note">(Agility Gear + Ancient Teleport Seed)</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="mining-gorajo-card">
+                        <div class="task-content">
+                            <span class="task-name">Gorajo Card</span>
+                            <a href="https://runescape.wiki/w/Gorajo_card" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="mining-divine-locations">
+                        <div class="task-content">
+                            <span class="task-name">Divine Locations</span>
+                            <a href="https://runescape.wiki/w/Divine_location" class="task-link" target="_blank">Wiki Guide</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- POF Gear & Burthorpe Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">🐷</span>
+                    <h2>Equip POF Gear & TP to Burthorpe</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-slayer-shop">
+                        <div class="task-content">
+                            <span class="task-name">Slayer Master Shop</span>
+                            <div class="subtask-list">
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="pof-broad-arrows">
+                                    <span class="task-name">Broad Arrow Heads</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-buy-runes">
+                        <div class="task-content">
+                            <span class="task-name">Buy Runes</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-taverley-flies">
+                        <div class="task-content">
+                            <span class="task-name">Zoom to Taverley and buy flies from pet shop</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-jatix">
+                        <div class="task-content">
+                            <span class="task-name">Jatix Herblore Supplies</span>
+                            <div class="subtask-list">
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="pof-jatix-vials">
+                                    <span class="task-name">Vials</span>
+                                </div>
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="pof-jatix-eye-newt">
+                                    <span class="task-name">Eye of newt</span>
+                                </div>
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="pof-jatix-herb-supplies">
+                                    <span class="task-name">Herblore supplies</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-betamax">
+                        <div class="task-content">
+                            <span class="task-name">Betamax TP Bags</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-anachronia-dino">
+                        <div class="task-content">
+                            <span class="task-name">Anachronia Dino Farm</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-manor-farm">
+                        <div class="task-content">
+                            <span class="task-name">Ardougne Manor Farm</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="pof-pure-essence">
+                        <div class="task-content">
+                            <span class="task-name">Pure Essence Wizard Comperty</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Craft Runes Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">🔮</span>
+                    <h2>Craft Runes - Equip Normal RC Loadout</h2>
+                </div>
+                
+                <div class="subsection">
+                    <h3>💰 Profitable Runes</h3>
+                    <p style="margin-bottom: 15px; font-style: italic; color: #7f8c8d;">
+                        <a href="https://runescape.wiki/w/Money_making_guide/Buying_runes" class="task-link" target="_blank">Money Making Guide</a>
+                    </p>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-vis-wax-check">
+                            <div class="task-content">
+                                <span class="task-name">Check daily Vis Wax rune using RC Cape</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-edgeville-tp">
+                            <div class="task-content">
+                                <span class="task-name">Edgeville TP</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-craft-abyss">
+                            <div class="task-content">
+                                <span class="task-name">Craft Fire/Astral Runes from Abyss</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-red-mage">
+                            <div class="task-content">
+                                <span class="task-name">Edgeville TP - Runes from Red Mage</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-mage-arena">
+                            <div class="task-content">
+                                <span class="task-name">Edgeville TP - Lever TP - Mage Arena Shop</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-port-sarim">
+                            <div class="task-content">
+                                <span class="task-name">Port Sarim TP - Runes Betty</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-void-knight">
+                            <div class="task-content">
+                                <span class="task-name">Void Knight Outpost TP</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-varrock">
+                            <div class="task-content">
+                                <span class="task-name">Varrock TP - Runes from Aubury</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-yanille">
+                            <div class="task-content">
+                                <span class="task-name">Yanille TP - Sand from Bert and Runes from Wizard Tower</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-lunar-isle">
+                            <div class="task-content">
+                                <span class="task-name">Lunar Isle TP - Runes from Baba Yaga</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-anachronia">
+                            <div class="task-content">
+                                <span class="task-name">Anachronia TP - Runes from Store Assistant</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-manage-base">
+                            <div class="task-content">
+                                <span class="task-name">Manage Anachronia Base</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="rc-craft-vis-wax">
+                            <div class="task-content">
+                                <span class="task-name">Craft Vis Wax at Wizard's Tower</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Mining Gear Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">⛏️</span>
+                    <h2>Equip Mining Gear & Resourceful Aura & Premier Porter Buff & Ancient Teleport Seed & Porters</h2>
+                </div>
+                
+                <div class="subsection">
+                    <h3>🏝️ TP to Oo'glog</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-red-sandstone">
+                            <div class="task-content">
+                                <span class="task-name">Mine Red Sandstone</span>
+                                <div class="subtask-list">
+                                    <div class="subtask-item">
+                                        <input type="checkbox" class="task-checkbox" data-task="mining-thermal-flasks">
+                                        <span class="task-name">Thermal Flasks / Flasks</span>
+                                        <span class="task-note">(Use Artificer's Measure + Portables while crafting)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-meat-packs">
+                            <div class="task-content">
+                                <span class="task-name">Buy Meat Packs</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>🏰 TP to Prifddinas</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-crystal-sandstone">
+                            <div class="task-content">
+                                <span class="task-name">Mine Crystal Sandstone</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-crystal-blossom">
+                            <div class="task-content">
+                                <span class="task-name">Get Crystal Tree Blossom</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-coeden-logs">
+                            <div class="task-content">
+                                <span class="task-name">Logs from Coeden</span>
+                                <a href="https://runescape.wiki/w/Money_making_guide/Buying_runes" class="task-link" target="_blank">Money Making Guide</a>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-priff-herblore">
+                            <div class="task-content">
+                                <span class="task-name">Herblore Supplies</span>
+                                <div class="subtask-list">
+                                    <div class="subtask-item">
+                                        <input type="checkbox" class="task-checkbox" data-task="mining-priff-vials">
+                                        <span class="task-name">Vials</span>
+                                    </div>
+                                    <div class="subtask-item">
+                                        <input type="checkbox" class="task-checkbox" data-task="mining-priff-eye-newt">
+                                        <span class="task-name">Eye of newt</span>
+                                    </div>
+                                    <div class="subtask-item">
+                                        <input type="checkbox" class="task-checkbox" data-task="mining-priff-herb-supplies">
+                                        <span class="task-name">Herblore supplies</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="mining-motherlode-maw">
+                            <div class="task-content">
+                                <span class="task-name">Motherlode Maw</span>
+                                <a href="https://runescape.wiki/w/Motherlode_Maw" class="task-link" target="_blank">Wiki Guide</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Herb Run Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">🌿</span>
+                    <h2>Herb Run</h2>
+                    <span class="task-note">(Needs Ironman Information to be added)</span>
+                </div>
+                
+                <div class="subsection">
+                    <h3>💰 Profitability Calculator</h3>
+                    <p style="margin-bottom: 15px; font-style: italic; color: #7f8c8d;">
+                        <a href="https://runescape.wiki/w/Calculator:Farming/Herbs" class="task-link" target="_blank">Farming/Herbs Calculator</a>
+                    </p>
+                </div>
+
+                <div class="subsection">
+                    <h3>🌱 Equip Farming Loadout & Activate Greenfingers Aura & Set Lunar Spellbook & Chug Juju Farming Potion</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-desert-tp">
+                            <div class="task-content">
+                                <span class="task-name">Mystic Teleport to Desert</span>
+                                <span class="task-note">Collect 8 Ultracompost - Gather and Plant</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-troll-farm">
+                            <div class="task-content">
+                                <span class="task-name">Troll Farm Teleport</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-catherby">
+                            <div class="task-content">
+                                <span class="task-name">Farming Amulet TP to Catherby</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-cabbage-port">
+                            <div class="task-content">
+                                <span class="task-name">Cabbage Port</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-morytania">
+                            <div class="task-content">
+                                <span class="task-name">Morytania</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-manor-farm">
+                            <div class="task-content">
+                                <span class="task-name">Manor Farm</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-crwys">
+                            <div class="task-content">
+                                <span class="task-name">Ancient Crystal Seed - Crwys 5</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-wilderness">
+                            <div class="task-content">
+                                <span class="task-name">Wilderness</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>⚔️ War's Retreat & Ancient Spellbook & Store Dwarven Harvester</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-wars-desert">
+                            <div class="task-content">
+                                <span class="task-name">Mystic Teleport to Desert</span>
+                                <span class="task-note">Collect 8 Ultracompost</span>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" class="task-checkbox" data-task="herb-hets-oasis">
+                            <div class="task-content">
+                                <span class="task-name">Het's Oasis RAPID GROWTH for Golden Roses</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Necromancy Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">💀</span>
+                    <h2>Necromancy Run</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="necro-lupe">
+                        <div class="task-content">
+                            <span class="task-name">Gather free supplies from Lupe</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="necro-slime">
+                        <div class="task-content">
+                            <span class="task-name">Gather Slime</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="necro-ectoplasm">
+                        <div class="task-content">
+                            <span class="task-name">5x Rituals - Ectoplasm</span>
+                            <span class="task-note">(Main site)</span>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="necro-essence">
+                        <div class="task-content">
+                            <span class="task-name">5x Rituals - Necro Essence</span>
+                            <span class="task-note">(Vorkath site)</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Shop Runs Section -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-emoji">🛒</span>
+                    <h2>Generic Collectibles and Shop Runs</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-culinaromancer">
+                        <div class="task-content">
+                            <span class="task-name">Culinaromancer's Chest</span>
+                            <a href="https://runescape.wiki/w/Culinaromancer%27s_Chest" class="task-link" target="_blank">Wiki Guide</a>
+                            <span class="task-note">in Lumbridge Castle</span>
+                            <div class="subtask-list">
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="shop-food">
+                                    <span class="task-name">Buy all food items</span>
+                                </div>
+                                <div class="subtask-item">
+                                    <input type="checkbox" class="task-checkbox" data-task="shop-gloves">
+                                    <span class="task-name">Buy gloves and disassemble</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-maat">
+                        <div class="task-content">
+                            <span class="task-name">Feather of Ma'at</span>
+                            <a href="https://runescape.wiki/w/Money_making_guide/Buying_feathers_of_Ma%27at" class="task-link" target="_blank">Money Making Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-feathers">
+                        <div class="task-content">
+                            <span class="task-name">Feather Shop Run</span>
+                            <a href="https://runescape.wiki/w/Money_making_guide/Buying_feathers" class="task-link" target="_blank">Money Making Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-yak">
+                        <div class="task-content">
+                            <span class="task-name">Yak Hide</span>
+                            <a href="https://runescape.wiki/w/Money_making_guide/Buying_yak-hide" class="task-link" target="_blank">Money Making Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-seaweed">
+                        <div class="task-content">
+                            <span class="task-name">Seaweed and Pineapple</span>
+                            <a href="https://runescape.wiki/w/Money_making_guide/Buying_seaweed_and_pineapples_from_Arhein" class="task-link" target="_blank">Money Making Guide</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-potato">
+                        <div class="task-content">
+                            <span class="task-name">Potato Cactus from Wise Old Man</span>
+                            <a href="https://runescape.wiki/w/Weird_Old_Man" class="task-link" target="_blank">Weird Old Man</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-planks">
+                        <div class="task-content">
+                            <span class="task-name">Planks from Razmire</span>
+                            <a href="https://runescape.wiki/w/Razmire_Keelgan" class="task-link" target="_blank">Razmire Keelgan</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-flax">
+                        <div class="task-content">
+                            <span class="task-name">Flax from Geoffrey</span>
+                            <a href="https://runescape.wiki/w/Geoffrey" class="task-link" target="_blank">Geoffrey</a>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox" data-task="shop-fruit">
+                        <div class="task-content">
+                            <span class="task-name">Pineapples and Apples from Dell Monti</span>
+                            <a href="https://runescape.wiki/w/Dell_Monti" class="task-link" target="_blank">Dell Monti</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="notes-section">
+                <h3>📝 Abbreviations</h3>
+                <div class="notes-list">
+                    <div class="note-item"><strong>FC</strong> = Friends Chat</div>
+                    <div class="note-item"><strong>TP</strong> = Teleport</div>
+                    <div class="note-item"><strong>POF</strong> = Player-owned Farm</div>
+                    <div class="note-item"><strong>RC</strong> = Runecrafting</div>
+                    <div class="note-item"><strong>GWD2</strong> = God Wars Dungeon 2</div>
+                    <div class="note-item"><strong>D&D</strong> = Distractions and Diversions</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Last updated: December 6, 2025 | Your progress is saved locally in your browser</p>
+        </div>
+    </div>
+
+    <script>
+        // Load saved progress when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            updateProgress();
+            
+            // Add event listeners to all checkboxes
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    saveProgress();
+                    updateProgress();
+                    updateTaskAppearance(this);
+                });
+            });
+        });
+
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const progress = {};
+            
+            checkboxes.forEach(checkbox => {
+                progress[checkbox.dataset.task] = checkbox.checked;
+            });
+            
+            localStorage.setItem('rs3-repeatables-progress', JSON.stringify(progress));
+        }
+
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('rs3-repeatables-progress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                
+                Object.keys(progress).forEach(taskId => {
+                    const checkbox = document.querySelector(`[data-task="${taskId}"]`);
+                    if (checkbox) {
+                        checkbox.checked = progress[taskId];
+                        updateTaskAppearance(checkbox);
+                    }
+                });
+            }
+        }
+
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const totalTasks = checkboxes.length;
+            const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${percentage}% Complete (${completedTasks}/${totalTasks} tasks)`;
+        }
+
+        function updateTaskAppearance(checkbox) {
+            const taskItem = checkbox.closest('.task-item');
+            if (checkbox.checked) {
+                taskItem.classList.add('completed');
+            } else {
+                taskItem.classList.remove('completed');
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('rs3-repeatables-progress');
+                const checkboxes = document.querySelectorAll('.task-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    updateTaskAppearance(checkbox);
+                });
+                updateProgress();
+            }
+        }
+    </script>
+</body>
+</html>
