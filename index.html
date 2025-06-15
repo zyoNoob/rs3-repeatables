@@ -15,6 +15,10 @@
             --text-color: #2c3e50;
             --border-color: #bdc3c7;
             --completed-bg: #d5f4e6;
+            --task-spacing: 12px;
+            --task-padding: 12px;
+            --task-gap: 12px;
+            --task-columns: 1;
         }
 
         * {
@@ -63,6 +67,77 @@
             border-bottom: 1px solid var(--border-color);
         }
 
+        .controls-section {
+            background: var(--background-color);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .control-group label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .density-slider {
+            width: 150px;
+            height: 5px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            border-radius: 5px;
+        }
+
+        .density-slider:hover {
+            opacity: 1;
+        }
+
+        .density-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--secondary-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .density-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--secondary-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .columns-select {
+            padding: 8px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            background: white;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .columns-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
         .progress-bar {
             width: 100%;
             height: 20px;
@@ -96,9 +171,15 @@
         .section-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
         }
 
         .section-header h2 {
@@ -109,6 +190,44 @@
 
         .section-emoji {
             font-size: 1.5em;
+        }
+
+        .collapse-toggle {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.2s ease;
+        }
+
+        .collapse-toggle:hover {
+            background: var(--primary-color);
+        }
+
+        .collapse-toggle.collapsed::after {
+            content: " ▼";
+        }
+
+        .collapse-toggle:not(.collapsed)::after {
+            content: " ▲";
+        }
+
+        .collapsible-content {
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .collapsible-content:not(.collapsed) {
+            max-height: 2000px;
+            opacity: 1;
         }
 
         .subsection {
@@ -134,13 +253,16 @@
 
         .task-list {
             list-style: none;
+            display: grid;
+            grid-template-columns: repeat(var(--task-columns), 1fr);
+            gap: var(--task-gap);
         }
 
         .task-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 12px;
-            padding: 12px;
+            margin-bottom: var(--task-spacing);
+            padding: var(--task-padding);
             border-radius: 8px;
             transition: all 0.2s ease;
             border: 1px solid transparent;
@@ -326,14 +448,35 @@
             </div>
         </div>
 
+        <div class="controls-section">
+            <div class="control-group">
+                <label for="densitySlider">Task Density</label>
+                <input type="range" id="densitySlider" class="density-slider" min="1" max="5" value="3" onchange="updateDensity(this.value)">
+                <span id="densityValue">Normal</span>
+            </div>
+            <div class="control-group">
+                <label for="columnsSelect">Columns</label>
+                <select id="columnsSelect" class="columns-select" onchange="updateColumns(this.value)">
+                    <option value="1">1 Column</option>
+                    <option value="2">2 Columns</option>
+                    <option value="3">3 Columns</option>
+                    <option value="4">4 Columns</option>
+                </select>
+            </div>
+        </div>
+
         <div class="content">
             <!-- Monthly Tasks -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">📅</span>
-                    <h2>Monthly Tasks</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">📅</span>
+                        <h2>Monthly Tasks</h2>
+                    </div>
+                    <button class="collapse-toggle" onclick="toggleCollapse('monthly-tasks')">Collapse</button>
                 </div>
-                <ul class="task-list">
+                <div id="monthly-tasks" class="collapsible-content">
+                    <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="monthly-slomon">
                         <div class="task-content">
@@ -383,16 +526,21 @@
                             <span class="task-note">for Ultracompost</span>
                         </div>
                     </li>
-                </ul>
+                    </ul>
+                </div>
             </div>
 
             <!-- Weekly Tasks -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">📅</span>
-                    <h2>Weekly Tasks</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">📅</span>
+                        <h2>Weekly Tasks</h2>
+                    </div>
+                    <button class="collapse-toggle" onclick="toggleCollapse('weekly-tasks')">Collapse</button>
                 </div>
-                <ul class="task-list">
+                <div id="weekly-tasks" class="collapsible-content">
+                    <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="weekly-citadel">
                         <div class="task-content">
@@ -502,7 +650,8 @@
                             <a href="https://runescape.wiki/w/Feng,_the_Bounty_Master" class="task-link" target="_blank">Feng, the Bounty Master</a>
                         </div>
                     </li>
-                </ul>
+                    </ul>
+                </div>
             </div>
 
             <div class="section-divider"></div>
@@ -1392,6 +1541,45 @@
                 saveProgress();
                 updateProgress();
             }
+        }
+
+        function toggleCollapse(sectionId) {
+            const content = document.getElementById(sectionId);
+            const button = document.querySelector(`[onclick="toggleCollapse('${sectionId}')"]`);
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                button.classList.remove('collapsed');
+                button.textContent = 'Collapse';
+            } else {
+                content.classList.add('collapsed');
+                button.classList.add('collapsed');
+                button.textContent = 'Expand';
+            }
+        }
+
+        function updateDensity(value) {
+            const root = document.documentElement;
+            const densityValue = document.getElementById('densityValue');
+            
+            const densitySettings = {
+                1: { spacing: '4px', padding: '6px', gap: '4px', label: 'Very Tight' },
+                2: { spacing: '8px', padding: '8px', gap: '6px', label: 'Tight' },
+                3: { spacing: '12px', padding: '12px', gap: '12px', label: 'Normal' },
+                4: { spacing: '16px', padding: '16px', gap: '16px', label: 'Loose' },
+                5: { spacing: '20px', padding: '20px', gap: '20px', label: 'Very Loose' }
+            };
+            
+            const setting = densitySettings[value];
+            root.style.setProperty('--task-spacing', setting.spacing);
+            root.style.setProperty('--task-padding', setting.padding);
+            root.style.setProperty('--task-gap', setting.gap);
+            densityValue.textContent = setting.label;
+        }
+
+        function updateColumns(value) {
+            const root = document.documentElement;
+            root.style.setProperty('--task-columns', value);
         }
     </script>
 </body>
