@@ -239,6 +239,15 @@
             font-size: 0.9em;
         }
 
+        .reset-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
         .reset-button {
             background: var(--accent-color);
             color: white;
@@ -247,12 +256,35 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
-            margin-left: 20px;
             transition: background 0.2s ease;
         }
 
         .reset-button:hover {
             background: #c0392b;
+        }
+
+        .reset-button-monthly {
+            background: #8e44ad;
+        }
+
+        .reset-button-monthly:hover {
+            background: #732d91;
+        }
+
+        .reset-button-weekly {
+            background: #2980b9;
+        }
+
+        .reset-button-weekly:hover {
+            background: #1f618d;
+        }
+
+        .reset-button-daily {
+            background: #f39c12;
+        }
+
+        .reset-button-daily:hover {
+            background: #d68910;
         }
 
         @media (max-width: 768px) {
@@ -286,7 +318,12 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="progress-text" id="progressText">0% Complete (0/0 tasks)</div>
-            <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
+            <div class="reset-buttons">
+                <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
+                <button class="reset-button reset-button-monthly" onclick="resetMonthlyProgress()">Reset Monthlies</button>
+                <button class="reset-button reset-button-weekly" onclick="resetWeeklyProgress()">Reset Weeklies</button>
+                <button class="reset-button reset-button-daily" onclick="resetDailyProgress()">Reset Dailies</button>
+            </div>
         </div>
 
         <div class="content">
@@ -1312,6 +1349,47 @@
                     checkbox.checked = false;
                     updateTaskAppearance(checkbox);
                 });
+                updateProgress();
+            }
+        }
+
+        function resetMonthlyProgress() {
+            if (confirm('Are you sure you want to reset all monthly task progress? This cannot be undone.')) {
+                const monthlyCheckboxes = document.querySelectorAll('.task-checkbox[data-task^="monthly-"]');
+                monthlyCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    updateTaskAppearance(checkbox);
+                });
+                saveProgress();
+                updateProgress();
+            }
+        }
+
+        function resetWeeklyProgress() {
+            if (confirm('Are you sure you want to reset all weekly task progress? This cannot be undone.')) {
+                const weeklyCheckboxes = document.querySelectorAll('.task-checkbox[data-task^="weekly-"]');
+                weeklyCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    updateTaskAppearance(checkbox);
+                });
+                saveProgress();
+                updateProgress();
+            }
+        }
+
+        function resetDailyProgress() {
+            if (confirm('Are you sure you want to reset all daily task progress? This cannot be undone.')) {
+                const dailyPrefixes = ['daily-', 'fort-', 'pof-', 'rc-', 'mining-', 'herb-', 'necro-', 'shop-'];
+                const dailyCheckboxes = document.querySelectorAll('.task-checkbox');
+                
+                dailyCheckboxes.forEach(checkbox => {
+                    const taskId = checkbox.dataset.task;
+                    if (dailyPrefixes.some(prefix => taskId.startsWith(prefix))) {
+                        checkbox.checked = false;
+                        updateTaskAppearance(checkbox);
+                    }
+                });
+                saveProgress();
                 updateProgress();
             }
         }
