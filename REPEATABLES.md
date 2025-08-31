@@ -62,7 +62,6 @@
 ## 🏰 Start at Fort Forinthry
 
 - [ ] **Daily Challenges**
-- [ ] **Jack of All Trades**
 - [ ] **Miscellania** - [Calculator](https://runescape.wiki/w/Calculator:Other/Miscellania)
 - [ ] **Archaeology Research**
 - [ ] **Fort Forinthry Bonus XP**
@@ -84,7 +83,7 @@
 
 ---
 
-## 🐷 Equip POF Gear & TP to Burthorpe
+## 🐷 Equip POF Gear & Advance Time Runes & TP to Burthorpe
 
 - [ ] **Slayer Master Shop**
   - [ ] Broad Arrow Heads
@@ -117,7 +116,7 @@
 - [ ] **Lunar Isle TP - Runes from Baba Yaga**
 - [ ] **Anachronia TP - Runes from Store Assistant**
 - [ ] **Manage Anachronia Base**
-- [ ] **Craft Vis Wax at Wizard's Tower**
+- [ ] **Craft Vis Wax at Wizard's Tower** - [Vis Vax](https://runescape.wiki/w/Rune_Goldberg_Machine)
 
 ---
 
@@ -133,7 +132,7 @@
 
 - [ ] **Mine Crystal Sandstone**
 - [ ] **Get Crystal Tree Blossom**
-- [ ] **Logs from Coeden** - [Money Making Guide](https://runescape.wiki/w/Money_making_guide/Buying_runes)
+- [ ] **Logs from Coeden** - [Wiki Guide](https://runescape.wiki/w/Coeden)
 - [ ] **Herblore Supplies**
   - [ ] Vials
   - [ ] Eye of newt
