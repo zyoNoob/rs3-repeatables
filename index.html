@@ -513,6 +513,65 @@
             }
         }
 
+        /* Timer Styles */
+        .reset-timer {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .reset-timer.daily {
+            background: linear-gradient(135deg, #f39c12, #d68910);
+        }
+
+        .reset-timer.weekly {
+            background: linear-gradient(135deg, #2980b9, #1f618d);
+        }
+
+        .reset-timer.monthly {
+            background: linear-gradient(135deg, #8e44ad, #732d91);
+        }
+
+        .reset-timer.expired {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .auto-reset-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            font-weight: 600;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .auto-reset-notification.show {
+            transform: translateX(0);
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -528,6 +587,18 @@
 
             .section-header h2 {
                 font-size: 1.5em;
+            }
+
+            .reset-timer {
+                margin-left: 8px;
+                font-size: 0.75em;
+                padding: 4px 8px;
+                min-width: 100px;
+            }
+
+            .section-header-left {
+                flex-wrap: wrap;
+                gap: 8px;
             }
         }
     </style>
@@ -590,6 +661,7 @@
                     <div class="section-header-left">
                         <span class="section-emoji">📅</span>
                         <h2>Monthly Tasks</h2>
+                        <span class="reset-timer" id="monthly-timer">Loading...</span>
                     </div>
                     <button class="collapse-toggle" onclick="toggleCollapse('monthly-tasks')">Collapse</button>
                 </div>
@@ -654,6 +726,7 @@
                     <div class="section-header-left">
                         <span class="section-emoji">📅</span>
                         <h2>Weekly Tasks</h2>
+                        <span class="reset-timer" id="weekly-timer">Loading...</span>
                     </div>
                     <button class="collapse-toggle" onclick="toggleCollapse('weekly-tasks')">Collapse</button>
                 </div>
@@ -777,8 +850,11 @@
             <!-- Daily Tasks -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">📅</span>
-                    <h2>Daily Tasks</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">📅</span>
+                        <h2>Daily Tasks</h2>
+                        <span class="reset-timer" id="daily-timer">Loading...</span>
+                    </div>
                 </div>
 
                 <!-- Time-gated Dailies -->
@@ -1552,9 +1628,18 @@
         const STORAGE_KEY = 'rs3-repeatables-profiles';
         const LEGACY_KEY = 'rs3-repeatables-progress';
 
+        // Timer System
+        let timerInterval = null;
+        let lastResetCheck = {
+            daily: null,
+            weekly: null,
+            monthly: null
+        };
+
         // Load saved progress when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeProfileSystem();
+            initializeTimerSystem();
             
             // Add event listeners to all checkboxes
             const checkboxes = document.querySelectorAll('.task-checkbox');
@@ -1571,6 +1656,179 @@
             document.getElementById('createProfileBtn').addEventListener('click', createProfile);
             document.getElementById('deleteProfileBtn').addEventListener('click', deleteProfile);
         });
+
+        // Timer System Functions
+        function initializeTimerSystem() {
+            // Load last reset check times
+            const savedResetCheck = localStorage.getItem('rs3-last-reset-check');
+            if (savedResetCheck) {
+                lastResetCheck = JSON.parse(savedResetCheck);
+            }
+
+            // Add timer classes to timer elements
+            document.getElementById('daily-timer').classList.add('daily');
+            document.getElementById('weekly-timer').classList.add('weekly');
+            document.getElementById('monthly-timer').classList.add('monthly');
+
+            // Start the timer updates
+            updateTimers();
+            timerInterval = setInterval(updateTimers, 1000);
+
+            // Check for auto-resets on page load
+            checkForAutoResets();
+        }
+
+        function updateTimers() {
+            const now = new Date();
+            
+            // Calculate next reset times
+            const nextDaily = getNextDailyReset(now);
+            const nextWeekly = getNextWeeklyReset(now);
+            const nextMonthly = getNextMonthlyReset(now);
+
+            // Update timer displays
+            updateTimerDisplay('daily-timer', nextDaily, now);
+            updateTimerDisplay('weekly-timer', nextWeekly, now);
+            updateTimerDisplay('monthly-timer', nextMonthly, now);
+        }
+
+        function getNextDailyReset(now) {
+            const nextReset = new Date(now);
+            nextReset.setUTCHours(0, 0, 0, 0);
+            nextReset.setUTCDate(nextReset.getUTCDate() + 1);
+            return nextReset;
+        }
+
+        function getNextWeeklyReset(now) {
+            const nextReset = new Date(now);
+            nextReset.setUTCHours(0, 0, 0, 0);
+            
+            // Find next Wednesday (day 3, where Sunday = 0)
+            const daysUntilWednesday = (3 - nextReset.getUTCDay() + 7) % 7;
+            if (daysUntilWednesday === 0 && now.getUTCHours() >= 0) {
+                // If it's Wednesday and past reset time, go to next Wednesday
+                nextReset.setUTCDate(nextReset.getUTCDate() + 7);
+            } else {
+                nextReset.setUTCDate(nextReset.getUTCDate() + daysUntilWednesday);
+            }
+            
+            return nextReset;
+        }
+
+        function getNextMonthlyReset(now) {
+            const nextReset = new Date(now);
+            nextReset.setUTCHours(0, 0, 0, 0);
+            nextReset.setUTCDate(1);
+            nextReset.setUTCMonth(nextReset.getUTCMonth() + 1);
+            return nextReset;
+        }
+
+        function updateTimerDisplay(timerId, nextReset, now) {
+            const timer = document.getElementById(timerId);
+            const timeDiff = nextReset - now;
+
+            if (timeDiff <= 0) {
+                timer.textContent = 'RESET!';
+                timer.classList.add('expired');
+                return;
+            }
+
+            timer.classList.remove('expired');
+
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+            let timeString = '';
+            if (days > 0) {
+                timeString = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            } else if (hours > 0) {
+                timeString = `${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                timeString = `${minutes}m ${seconds}s`;
+            }
+
+            timer.textContent = timeString;
+        }
+
+        function checkForAutoResets() {
+            if (!currentProfile) return;
+
+            const now = new Date();
+            const currentDay = now.toDateString();
+            const currentWeek = getWeekKey(now);
+            const currentMonth = `${now.getUTCFullYear()}-${now.getUTCMonth()}`;
+
+            let resetOccurred = false;
+
+            // Check daily reset
+            if (lastResetCheck.daily !== currentDay && hasPassedDailyReset(now)) {
+                resetDailyProgress(true);
+                lastResetCheck.daily = currentDay;
+                resetOccurred = true;
+            }
+
+            // Check weekly reset
+            if (lastResetCheck.weekly !== currentWeek && hasPassedWeeklyReset(now)) {
+                resetWeeklyProgress(true);
+                lastResetCheck.weekly = currentWeek;
+                resetOccurred = true;
+            }
+
+            // Check monthly reset
+            if (lastResetCheck.monthly !== currentMonth && hasPassedMonthlyReset(now)) {
+                resetMonthlyProgress(true);
+                lastResetCheck.monthly = currentMonth;
+                resetOccurred = true;
+            }
+
+            if (resetOccurred) {
+                localStorage.setItem('rs3-last-reset-check', JSON.stringify(lastResetCheck));
+                showAutoResetNotification();
+            }
+        }
+
+        function hasPassedDailyReset(now) {
+            const todayReset = new Date(now);
+            todayReset.setUTCHours(0, 0, 0, 0);
+            return now >= todayReset;
+        }
+
+        function hasPassedWeeklyReset(now) {
+            const thisWeekReset = new Date(now);
+            thisWeekReset.setUTCHours(0, 0, 0, 0);
+            const daysSinceWednesday = (now.getUTCDay() - 3 + 7) % 7;
+            thisWeekReset.setUTCDate(thisWeekReset.getUTCDate() - daysSinceWednesday);
+            return now >= thisWeekReset;
+        }
+
+        function hasPassedMonthlyReset(now) {
+            const thisMonthReset = new Date(now);
+            thisMonthReset.setUTCHours(0, 0, 0, 0);
+            thisMonthReset.setUTCDate(1);
+            return now >= thisMonthReset;
+        }
+
+        function getWeekKey(date) {
+            const wednesday = new Date(date);
+            const daysSinceWednesday = (date.getUTCDay() - 3 + 7) % 7;
+            wednesday.setUTCDate(wednesday.getUTCDate() - daysSinceWednesday);
+            return `${wednesday.getUTCFullYear()}-W${Math.ceil(wednesday.getUTCDate() / 7)}`;
+        }
+
+        function showAutoResetNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'auto-reset-notification';
+            notification.textContent = '🔄 Tasks have been automatically reset!';
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 4000);
+        }
 
         function initializeProfileSystem() {
             migrateLegacyData();
@@ -1806,8 +2064,8 @@
             }
         }
 
-        function resetMonthlyProgress() {
-            if (confirm('Are you sure you want to reset all monthly task progress? This cannot be undone.')) {
+        function resetMonthlyProgress(autoReset = false) {
+            if (autoReset || confirm('Are you sure you want to reset all monthly task progress? This cannot be undone.')) {
                 const monthlyCheckboxes = document.querySelectorAll('.task-checkbox[data-task^="monthly-"]');
                 monthlyCheckboxes.forEach(checkbox => {
                     checkbox.checked = false;
@@ -1818,8 +2076,8 @@
             }
         }
 
-        function resetWeeklyProgress() {
-            if (confirm('Are you sure you want to reset all weekly task progress? This cannot be undone.')) {
+        function resetWeeklyProgress(autoReset = false) {
+            if (autoReset || confirm('Are you sure you want to reset all weekly task progress? This cannot be undone.')) {
                 const weeklyCheckboxes = document.querySelectorAll('.task-checkbox[data-task^="weekly-"]');
                 weeklyCheckboxes.forEach(checkbox => {
                     checkbox.checked = false;
@@ -1830,8 +2088,8 @@
             }
         }
 
-        function resetDailyProgress() {
-            if (confirm('Are you sure you want to reset all daily task progress? This cannot be undone.')) {
+        function resetDailyProgress(autoReset = false) {
+            if (autoReset || confirm('Are you sure you want to reset all daily task progress? This cannot be undone.')) {
                 const dailyPrefixes = ['daily-', 'fort-', 'pof-', 'rc-', 'mining-', 'herb-', 'necro-', 'shop-'];
                 const dailyCheckboxes = document.querySelectorAll('.task-checkbox');
                 
