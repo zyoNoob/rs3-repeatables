@@ -284,11 +284,16 @@
             border-radius: 8px;
             transition: all 0.2s ease;
             border: 1px solid transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         .task-item:hover {
             background: #f8f9fa;
             border-color: var(--border-color);
+            cursor: pointer;
         }
 
         .task-item.completed {
@@ -338,6 +343,24 @@
         .subtask-item {
             margin-bottom: 6px;
             padding: 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .subtask-item:hover {
+            background: #f0f0f0;
+        }
+
+        .subtask-item.completed {
+            background: #e8f5e8;
+            opacity: 0.8;
         }
 
         .section-divider {
@@ -1665,6 +1688,79 @@
                 });
             });
 
+            // Add click event listeners to task items for better UX
+            const taskItems = document.querySelectorAll('.task-item');
+            taskItems.forEach(taskItem => {
+                taskItem.addEventListener('click', function(event) {
+                    // Don't toggle if clicking on links, buttons, or the checkbox itself
+                    if (event.target.tagName === 'A' ||
+                        event.target.tagName === 'BUTTON' ||
+                        event.target.classList.contains('task-checkbox') ||
+                        event.target.closest('a') ||
+                        event.target.closest('button') ||
+                        event.target.closest('.subtask-item')) {
+                        return;
+                    }
+                    
+                    // Find the main checkbox in this task item (not subtask checkboxes)
+                    const mainCheckbox = taskItem.querySelector(':scope > .task-checkbox');
+                    if (mainCheckbox) {
+                        // Check if this task has subtasks
+                        const subtasks = taskItem.querySelectorAll('.subtask-item .task-checkbox');
+                        
+                        if (subtasks.length > 0) {
+                            // Parent task with subtasks - toggle all subtasks to match parent state
+                            const newState = !mainCheckbox.checked;
+                            mainCheckbox.checked = newState;
+                            
+                            subtasks.forEach(subtaskCheckbox => {
+                                subtaskCheckbox.checked = newState;
+                                const changeEvent = new Event('change', { bubbles: true });
+                                subtaskCheckbox.dispatchEvent(changeEvent);
+                            });
+                            
+                            // Trigger change event for main checkbox
+                            const changeEvent = new Event('change', { bubbles: true });
+                            mainCheckbox.dispatchEvent(changeEvent);
+                        } else {
+                            // Regular task without subtasks
+                            mainCheckbox.checked = !mainCheckbox.checked;
+                            const changeEvent = new Event('change', { bubbles: true });
+                            mainCheckbox.dispatchEvent(changeEvent);
+                        }
+                    }
+                });
+            });
+
+            // Add click event listeners to subtask items
+            const subtaskItems = document.querySelectorAll('.subtask-item');
+            subtaskItems.forEach(subtaskItem => {
+                subtaskItem.addEventListener('click', function(event) {
+                    // Don't toggle if clicking on links, buttons, or the checkbox itself
+                    if (event.target.tagName === 'A' ||
+                        event.target.tagName === 'BUTTON' ||
+                        event.target.classList.contains('task-checkbox') ||
+                        event.target.closest('a') ||
+                        event.target.closest('button')) {
+                        return;
+                    }
+                    
+                    // Stop event from bubbling to parent task
+                    event.stopPropagation();
+                    
+                    // Find the checkbox in this subtask item
+                    const checkbox = subtaskItem.querySelector('.task-checkbox');
+                    if (checkbox) {
+                        // Toggle the checkbox
+                        checkbox.checked = !checkbox.checked;
+                        
+                        // Trigger the change event to save progress and update appearance
+                        const changeEvent = new Event('change', { bubbles: true });
+                        checkbox.dispatchEvent(changeEvent);
+                    }
+                });
+            });
+
             // Profile system event listeners
             document.getElementById('profileSelect').addEventListener('change', switchProfile);
             document.getElementById('createProfileBtn').addEventListener('click', createProfile);
@@ -2052,10 +2148,22 @@
 
         function updateTaskAppearance(checkbox) {
             const taskItem = checkbox.closest('.task-item');
-            if (checkbox.checked) {
-                taskItem.classList.add('completed');
-            } else {
-                taskItem.classList.remove('completed');
+            const subtaskItem = checkbox.closest('.subtask-item');
+            
+            if (subtaskItem) {
+                // Handle subtask appearance
+                if (checkbox.checked) {
+                    subtaskItem.classList.add('completed');
+                } else {
+                    subtaskItem.classList.remove('completed');
+                }
+            } else if (taskItem) {
+                // Handle main task appearance
+                if (checkbox.checked) {
+                    taskItem.classList.add('completed');
+                } else {
+                    taskItem.classList.remove('completed');
+                }
             }
         }
 
