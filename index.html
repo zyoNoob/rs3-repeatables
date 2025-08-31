@@ -427,6 +427,92 @@
             background: #d68910;
         }
 
+        /* Profile Section Styles */
+        .profile-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .profile-select {
+            padding: 8px 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+            min-width: 200px;
+        }
+
+        .profile-select option {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .profile-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: var(--success-color);
+            color: white;
+        }
+
+        .profile-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .delete-btn {
+            background: var(--accent-color);
+        }
+
+        .delete-btn:hover:not(:disabled) {
+            background: #c0392b;
+        }
+
+        .current-profile {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .current-profile.active {
+            color: #2ecc71;
+        }
+
+        @media (max-width: 768px) {
+            .profile-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .profile-select {
+                min-width: auto;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -451,6 +537,20 @@
         <div class="header">
             <h1>🏰 RuneScape 3 Repeatables</h1>
             <p>Track your daily, weekly, and monthly tasks efficiently</p>
+            
+            <!-- User Profile Section -->
+            <div class="profile-section">
+                <div class="profile-controls">
+                    <select id="profileSelect" class="profile-select">
+                        <option value="">Select Profile...</option>
+                    </select>
+                    <button id="createProfileBtn" class="profile-btn">Create Profile</button>
+                    <button id="deleteProfileBtn" class="profile-btn delete-btn" disabled>Delete Profile</button>
+                </div>
+                <div id="currentProfile" class="current-profile">
+                    <span>No profile selected</span>
+                </div>
+            </div>
         </div>
 
         <div class="progress-section">
@@ -1447,10 +1547,14 @@
     </div>
 
     <script>
+        // Profile Management System
+        let currentProfile = null;
+        const STORAGE_KEY = 'rs3-repeatables-profiles';
+        const LEGACY_KEY = 'rs3-repeatables-progress';
+
         // Load saved progress when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            loadProgress();
-            updateProgress();
+            initializeProfileSystem();
             
             // Add event listeners to all checkboxes
             const checkboxes = document.querySelectorAll('.task-checkbox');
@@ -1461,9 +1565,160 @@
                     updateTaskAppearance(this);
                 });
             });
+
+            // Profile system event listeners
+            document.getElementById('profileSelect').addEventListener('change', switchProfile);
+            document.getElementById('createProfileBtn').addEventListener('click', createProfile);
+            document.getElementById('deleteProfileBtn').addEventListener('click', deleteProfile);
         });
 
+        function initializeProfileSystem() {
+            migrateLegacyData();
+            loadProfiles();
+            
+            // Try to load the last used profile
+            const lastProfile = localStorage.getItem('rs3-last-profile');
+            if (lastProfile && getProfiles()[lastProfile]) {
+                switchToProfile(lastProfile);
+            }
+        }
+
+        function migrateLegacyData() {
+            const legacyData = localStorage.getItem(LEGACY_KEY);
+            if (legacyData) {
+                const profiles = getProfiles();
+                if (!profiles['Default']) {
+                    profiles['Default'] = {
+                        name: 'Default',
+                        progress: JSON.parse(legacyData),
+                        created: new Date().toISOString()
+                    };
+                    saveProfiles(profiles);
+                    localStorage.removeItem(LEGACY_KEY);
+                }
+            }
+        }
+
+        function getProfiles() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : {};
+        }
+
+        function saveProfiles(profiles) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
+        }
+
+        function loadProfiles() {
+            const profiles = getProfiles();
+            const select = document.getElementById('profileSelect');
+            
+            // Clear existing options except the first one
+            select.innerHTML = '<option value="">Select Profile...</option>';
+            
+            Object.keys(profiles).forEach(profileId => {
+                const option = document.createElement('option');
+                option.value = profileId;
+                option.textContent = profiles[profileId].name;
+                select.appendChild(option);
+            });
+        }
+
+        function createProfile() {
+            const profileName = prompt('Enter profile name:');
+            if (!profileName || profileName.trim() === '') {
+                return;
+            }
+
+            const trimmedName = profileName.trim();
+            const profileId = generateProfileId(trimmedName);
+            const profiles = getProfiles();
+
+            // Check if profile already exists
+            if (Object.values(profiles).some(p => p.name.toLowerCase() === trimmedName.toLowerCase())) {
+                alert('A profile with this name already exists!');
+                return;
+            }
+
+            profiles[profileId] = {
+                name: trimmedName,
+                progress: {},
+                created: new Date().toISOString()
+            };
+
+            saveProfiles(profiles);
+            loadProfiles();
+            switchToProfile(profileId);
+        }
+
+        function deleteProfile() {
+            if (!currentProfile) return;
+
+            const profiles = getProfiles();
+            const profileName = profiles[currentProfile].name;
+
+            if (confirm(`Are you sure you want to delete the profile "${profileName}"? This cannot be undone.`)) {
+                delete profiles[currentProfile];
+                saveProfiles(profiles);
+                
+                // Clear current profile
+                currentProfile = null;
+                localStorage.removeItem('rs3-last-profile');
+                
+                // Reset UI
+                document.getElementById('profileSelect').value = '';
+                document.getElementById('currentProfile').textContent = 'No profile selected';
+                document.getElementById('currentProfile').classList.remove('active');
+                document.getElementById('deleteProfileBtn').disabled = true;
+                
+                // Clear all checkboxes
+                clearAllCheckboxes();
+                updateProgress();
+                loadProfiles();
+            }
+        }
+
+        function switchProfile() {
+            const select = document.getElementById('profileSelect');
+            const profileId = select.value;
+            
+            if (profileId) {
+                switchToProfile(profileId);
+            } else {
+                currentProfile = null;
+                localStorage.removeItem('rs3-last-profile');
+                document.getElementById('currentProfile').textContent = 'No profile selected';
+                document.getElementById('currentProfile').classList.remove('active');
+                document.getElementById('deleteProfileBtn').disabled = true;
+                clearAllCheckboxes();
+                updateProgress();
+            }
+        }
+
+        function switchToProfile(profileId) {
+            const profiles = getProfiles();
+            if (!profiles[profileId]) return;
+
+            currentProfile = profileId;
+            localStorage.setItem('rs3-last-profile', profileId);
+            
+            // Update UI
+            document.getElementById('profileSelect').value = profileId;
+            document.getElementById('currentProfile').textContent = `Active: ${profiles[profileId].name}`;
+            document.getElementById('currentProfile').classList.add('active');
+            document.getElementById('deleteProfileBtn').disabled = false;
+            
+            // Load profile progress
+            loadProgress();
+            updateProgress();
+        }
+
+        function generateProfileId(name) {
+            return name.toLowerCase().replace(/[^a-z0-9]/g, '') + '_' + Date.now();
+        }
+
         function saveProgress() {
+            if (!currentProfile) return;
+
             const checkboxes = document.querySelectorAll('.task-checkbox');
             const progress = {};
             
@@ -1471,22 +1726,46 @@
                 progress[checkbox.dataset.task] = checkbox.checked;
             });
             
-            localStorage.setItem('rs3-repeatables-progress', JSON.stringify(progress));
+            const profiles = getProfiles();
+            if (profiles[currentProfile]) {
+                profiles[currentProfile].progress = progress;
+                profiles[currentProfile].lastUpdated = new Date().toISOString();
+                saveProfiles(profiles);
+            }
         }
 
         function loadProgress() {
-            const savedProgress = localStorage.getItem('rs3-repeatables-progress');
-            if (savedProgress) {
-                const progress = JSON.parse(savedProgress);
+            if (!currentProfile) {
+                clearAllCheckboxes();
+                return;
+            }
+
+            const profiles = getProfiles();
+            const profile = profiles[currentProfile];
+            
+            if (profile && profile.progress) {
+                // Clear all checkboxes first
+                clearAllCheckboxes();
                 
-                Object.keys(progress).forEach(taskId => {
+                // Load profile progress
+                Object.keys(profile.progress).forEach(taskId => {
                     const checkbox = document.querySelector(`[data-task="${taskId}"]`);
                     if (checkbox) {
-                        checkbox.checked = progress[taskId];
+                        checkbox.checked = profile.progress[taskId];
                         updateTaskAppearance(checkbox);
                     }
                 });
+            } else {
+                clearAllCheckboxes();
             }
+        }
+
+        function clearAllCheckboxes() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                updateTaskAppearance(checkbox);
+            });
         }
 
         function updateProgress() {
@@ -1509,13 +1788,20 @@
         }
 
         function resetProgress() {
-            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-                localStorage.removeItem('rs3-repeatables-progress');
-                const checkboxes = document.querySelectorAll('.task-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                    updateTaskAppearance(checkbox);
-                });
+            if (!currentProfile) {
+                alert('Please select a profile first.');
+                return;
+            }
+
+            const profiles = getProfiles();
+            const profileName = profiles[currentProfile].name;
+
+            if (confirm(`Are you sure you want to reset all progress for "${profileName}"? This cannot be undone.`)) {
+                profiles[currentProfile].progress = {};
+                profiles[currentProfile].lastUpdated = new Date().toISOString();
+                saveProfiles(profiles);
+                
+                clearAllCheckboxes();
                 updateProgress();
             }
         }
