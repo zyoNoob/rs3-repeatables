@@ -756,10 +756,8 @@
         .task-checkbox {
             margin-right: 12px;
             margin-top: 2px;
-            width: 18px;
-            height: 18px;
             cursor: pointer;
-            accent-color: var(--success-color);
+            flex-shrink: 0;
         }
 
         .task-content {
@@ -1178,9 +1176,9 @@
                         <span class="section-emoji">📅</span>
                         <h2>Monthly Tasks</h2>
                         <span class="reset-timer" id="monthly-timer">Loading...</span>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('monthly')" id="showHiddenMonthly" style="display: none;">Show Hidden</button>
                     </div>
                     <button class="collapse-toggle" onclick="toggleCollapse('monthly-tasks')">Collapse</button>
-                    <button class="show-hidden-btn" onclick="toggleHiddenTasks('monthly')" id="showHiddenMonthly" style="display: none;">Show Hidden</button>
                 </div>
                 <div id="monthly-tasks" class="collapsible-content">
                     <ul class="task-list">
@@ -1244,9 +1242,9 @@
                         <span class="section-emoji">📅</span>
                         <h2>Weekly Tasks</h2>
                         <span class="reset-timer" id="weekly-timer">Loading...</span>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('weekly')" id="showHiddenWeekly" style="display: none;">Show Hidden</button>
                     </div>
                     <button class="collapse-toggle" onclick="toggleCollapse('weekly-tasks')">Collapse</button>
-                    <button class="show-hidden-btn" onclick="toggleHiddenTasks('weekly')" id="showHiddenWeekly" style="display: none;">Show Hidden</button>
                 </div>
                 <div id="weekly-tasks" class="collapsible-content">
                     <ul class="task-list">
@@ -1372,8 +1370,8 @@
                         <span class="section-emoji">📅</span>
                         <h2>Daily Tasks</h2>
                         <span class="reset-timer" id="daily-timer">Loading...</span>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('daily')" id="showHiddenDaily" style="display: none;">Show Hidden</button>
                     </div>
-                    <button class="show-hidden-btn" onclick="toggleHiddenTasks('daily')" id="showHiddenDaily" style="display: none;">Show Hidden</button>
                 </div>
 
                 <!-- Time-gated Dailies -->
@@ -1533,10 +1531,12 @@
             <!-- Fort Forinthry Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">🏰</span>
-                    <h2>Start at Fort Forinthry</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">🏰</span>
+                        <h2>Start at Fort Forinthry</h2>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('fort')" id="showHiddenFort" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('fort')" id="showHiddenFort" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="fort-challenges">
@@ -1661,10 +1661,12 @@
             <!-- POF Gear & Burthorpe Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">🐷</span>
-                    <h2>Equip POF Gear & Advance Time Runes & TP to Burthorpe</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">🐷</span>
+                        <h2>Equip POF Gear & Advance Time Runes & TP to Burthorpe</h2>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('pof')" id="showHiddenPof" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('pof')" id="showHiddenPof" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="pof-slayer-shop">
@@ -1742,10 +1744,12 @@
             <!-- Craft Runes Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">🔮</span>
-                    <h2>Craft Runes - Equip Normal RC Loadout</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">🔮</span>
+                        <h2>Craft Runes - Equip Normal RC Loadout</h2>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('rc')" id="showHiddenRc" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('rc')" id="showHiddenRc" style="display: none;">Show Hidden</button>
                 
                 <div class="subsection">
                     <h3>💰 Profitable Runes</h3>
@@ -1841,10 +1845,12 @@
             <!-- Mining Gear Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">⛏️</span>
-                    <h2>Equip Mining Gear & Resourceful Aura & Premier Porter Buff & Ancient Teleport Seed & Porters</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">⛏️</span>
+                        <h2>Equip Mining Gear & Resourceful Aura & Premier Porter Buff & Ancient Teleport Seed & Porters</h2>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('mining')" id="showHiddenMining" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('mining')" id="showHiddenMining" style="display: none;">Show Hidden</button>
                 
                 <div class="subsection">
                     <h3>🏝️ TP to Oo'glog</h3>
@@ -1929,11 +1935,13 @@
             <!-- Herb Run Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">🌿</span>
-                    <h2>Herb Run</h2>
-                    <span class="task-note">(Needs Ironman Information to be added)</span>
+                    <div class="section-header-left">
+                        <span class="section-emoji">🌿</span>
+                        <h2>Herb Run</h2>
+                        <span class="task-note">(Needs Ironman Information to be added)</span>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('herb')" id="showHiddenHerb" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('herb')" id="showHiddenHerb" style="display: none;">Show Hidden</button>
                 
                 <div class="subsection">
                     <h3>💰 Profitability Calculator</h3>
@@ -2022,10 +2030,12 @@
             <!-- Necromancy Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">💀</span>
-                    <h2>Necromancy Run</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">💀</span>
+                        <h2>Necromancy Run</h2>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('necro')" id="showHiddenNecro" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('necro')" id="showHiddenNecro" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="necro-lupe">
@@ -2061,10 +2071,12 @@
             <!-- Shop Runs Section -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-emoji">🛒</span>
-                    <h2>Generic Collectibles and Shop Runs</h2>
+                    <div class="section-header-left">
+                        <span class="section-emoji">🛒</span>
+                        <h2>Generic Collectibles and Shop Runs</h2>
+                        <button class="show-hidden-btn" onclick="toggleHiddenTasks('shop')" id="showHiddenShop" style="display: none;">Show Hidden</button>
+                    </div>
                 </div>
-                <button class="show-hidden-btn" onclick="toggleHiddenTasks('shop')" id="showHiddenShop" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="shop-culinaromancer">
@@ -2199,9 +2211,38 @@
             const checkboxes = document.querySelectorAll('.task-checkbox');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
+                    // Update parent task state if this is a subtask
+                    updateParentTaskState(this);
                     saveProgress();
                     updateProgress();
                     updateTaskAppearance(this);
+                });
+                
+                // Make checkbox clicks behave the same as task clicks for parent tasks
+                checkbox.addEventListener('click', function(event) {
+                    const taskItem = this.closest('.task-item');
+                    const subtaskItem = this.closest('.subtask-item');
+                    
+                    // If this is a subtask checkbox, let it behave normally
+                    if (subtaskItem) {
+                        return; // Allow normal checkbox behavior for subtasks
+                    }
+                    
+                    // Only handle parent task checkboxes specially
+                    const subtasks = taskItem?.querySelectorAll('.subtask-item .task-checkbox');
+                    if (subtasks && subtasks.length > 0) {
+                        // This is a parent task checkbox - allow the click but then sync children
+                        // Don't prevent default - let the checkbox toggle naturally
+                        setTimeout(() => {
+                            // After the checkbox state changes, sync all children to match
+                            const isChecked = this.checked;
+                            subtasks.forEach(subtaskCheckbox => {
+                                subtaskCheckbox.checked = isChecked;
+                                const changeEvent = new Event('change', { bubbles: true });
+                                subtaskCheckbox.dispatchEvent(changeEvent);
+                            });
+                        }, 0);
+                    }
                 });
             });
 
@@ -2228,29 +2269,7 @@
                     // Find the main checkbox in this task item (not subtask checkboxes)
                     const mainCheckbox = taskItem.querySelector(':scope > .task-checkbox');
                     if (mainCheckbox) {
-                        // Check if this task has subtasks
-                        const subtasks = taskItem.querySelectorAll('.subtask-item .task-checkbox');
-                        
-                        if (subtasks.length > 0) {
-                            // Parent task with subtasks - toggle all subtasks to match parent state
-                            const newState = !mainCheckbox.checked;
-                            mainCheckbox.checked = newState;
-                            
-                            subtasks.forEach(subtaskCheckbox => {
-                                subtaskCheckbox.checked = newState;
-                                const changeEvent = new Event('change', { bubbles: true });
-                                subtaskCheckbox.dispatchEvent(changeEvent);
-                            });
-                            
-                            // Trigger change event for main checkbox
-                            const changeEvent = new Event('change', { bubbles: true });
-                            mainCheckbox.dispatchEvent(changeEvent);
-                        } else {
-                            // Regular task without subtasks
-                            mainCheckbox.checked = !mainCheckbox.checked;
-                            const changeEvent = new Event('change', { bubbles: true });
-                            mainCheckbox.dispatchEvent(changeEvent);
-                        }
+                        toggleTaskWithChildren(mainCheckbox, taskItem);
                     }
                 });
             });
@@ -3143,6 +3162,51 @@
             
             document.getElementById('progressFill').style.width = percentage + '%';
             document.getElementById('progressText').textContent = `${percentage}% Complete (${completedTasks}/${totalTasks} tasks)`;
+        }
+
+        function toggleTaskWithChildren(checkbox, taskItem) {
+            const subtasks = taskItem.querySelectorAll('.subtask-item .task-checkbox');
+            const newState = !checkbox.checked;
+            
+            // Set parent task state
+            checkbox.checked = newState;
+            
+            // Set all subtasks to match parent state
+            subtasks.forEach(subtaskCheckbox => {
+                subtaskCheckbox.checked = newState;
+                const changeEvent = new Event('change', { bubbles: true });
+                subtaskCheckbox.dispatchEvent(changeEvent);
+            });
+            
+            // Trigger change event for parent checkbox
+            const changeEvent = new Event('change', { bubbles: true });
+            checkbox.dispatchEvent(changeEvent);
+        }
+        
+        function updateParentTaskState(checkbox) {
+            const subtaskItem = checkbox.closest('.subtask-item');
+            if (!subtaskItem) return; // Not a subtask
+            
+            const parentTaskItem = subtaskItem.closest('.task-item');
+            if (!parentTaskItem) return;
+            
+            const parentCheckbox = parentTaskItem.querySelector(':scope > .task-checkbox');
+            if (!parentCheckbox) return;
+            
+            const allSubtasks = parentTaskItem.querySelectorAll('.subtask-item .task-checkbox');
+            const checkedSubtasks = parentTaskItem.querySelectorAll('.subtask-item .task-checkbox:checked');
+            
+            // If all subtasks are checked, check the parent
+            // If no subtasks are checked, uncheck the parent
+            // If some are checked, leave parent as is (could be enhanced with indeterminate state)
+            if (checkedSubtasks.length === allSubtasks.length) {
+                parentCheckbox.checked = true;
+            } else if (checkedSubtasks.length === 0) {
+                parentCheckbox.checked = false;
+            }
+            
+            // Update parent appearance
+            updateTaskAppearance(parentCheckbox);
         }
 
         function updateTaskAppearance(checkbox) {
