@@ -49,6 +49,458 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .hamburger-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .hamburger-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            min-width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .profile-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .profile-icon.active {
+            background: var(--success-color);
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Hamburger Menu Panel */
+        .hamburger-menu {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 350px;
+            height: 100vh;
+            background: var(--card-background);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: left 0.3s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .hamburger-menu.open {
+            left: 0;
+        }
+
+        .hamburger-menu-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hamburger-menu-title {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .hamburger-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background 0.2s ease;
+        }
+
+        .hamburger-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hamburger-menu-content {
+            padding: 20px;
+        }
+
+        .hamburger-section {
+            margin-bottom: 30px;
+        }
+
+        .hamburger-section h3 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .hamburger-reset-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .hamburger-reset-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .hamburger-reset-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .hamburger-reset-btn.monthly {
+            background: #8e44ad;
+        }
+
+        .hamburger-reset-btn.monthly:hover {
+            background: #732d91;
+        }
+
+        .hamburger-reset-btn.weekly {
+            background: #2980b9;
+        }
+
+        .hamburger-reset-btn.weekly:hover {
+            background: #1f618d;
+        }
+
+        .hamburger-reset-btn.daily {
+            background: #f39c12;
+        }
+
+        .hamburger-reset-btn.daily:hover {
+            background: #d68910;
+        }
+
+        .hamburger-control-group {
+            margin-bottom: 20px;
+        }
+
+        .hamburger-control-group label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .hamburger-density-slider {
+            width: 100%;
+            height: 5px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .hamburger-density-slider:hover {
+            opacity: 1;
+        }
+
+        .hamburger-density-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--secondary-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .hamburger-density-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--secondary-color);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .hamburger-columns-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            background: white;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .hamburger-columns-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        /* Profile Dropdown Menu */
+        .profile-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            min-width: 250px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .profile-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-dropdown-current {
+            font-size: 0.9em;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .profile-dropdown-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            background: white;
+            color: var(--primary-color);
+            font-size: 0.9em;
+        }
+
+        .profile-dropdown-select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .profile-dropdown-actions {
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .profile-dropdown-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .profile-dropdown-btn.create {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .profile-dropdown-btn.create:hover {
+            background: #229954;
+        }
+
+        .profile-dropdown-btn.delete {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .profile-dropdown-btn.delete:hover:not(:disabled) {
+            background: #c0392b;
+        }
+
+        .profile-dropdown-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        /* Menu Backdrop */
+        .menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Show Hidden Tasks Button */
+        .show-hidden-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .show-hidden-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .show-hidden-btn.active {
+            background: var(--accent-color);
+        }
+
+        /* Task Hiding Context Menu */
+        .task-context-menu {
+            position: absolute;
+            background: var(--card-background);
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95);
+            transition: all 0.2s ease;
+        }
+
+        .task-context-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .task-context-menu-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: var(--text-color);
+            transition: background 0.2s ease;
+        }
+
+        .task-context-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-context-menu-item:hover {
+            background: var(--background-color);
+        }
+
+        .task-context-menu-item.hide {
+            color: var(--accent-color);
+        }
+
+        /* Hidden task styles */
+        .task-item.hidden,
+        .subtask-item.hidden {
+            display: none !important;
+        }
+
+        /* Mobile Responsive Styles for new components */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                width: 100vw;
+                left: -100vw;
+            }
+
+            .hamburger-menu.open {
+                left: 0;
+            }
+
+            .profile-dropdown {
+                right: -10px;
+                min-width: 200px;
+            }
+
+            .header-controls {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+            }
+
+            .hamburger-btn, .profile-icon {
+                padding: 12px;
+                font-size: 18px;
+            }
+
+            .profile-icon {
+                min-width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .hamburger-reset-buttons {
+                gap: 12px;
+            }
+
+            .hamburger-reset-btn {
+                padding: 14px 16px;
+                font-size: 1em;
+            }
+
+            .show-hidden-btn {
+                font-size: 0.7em;
+                padding: 4px 8px;
+                margin-left: 5px;
+            }
         }
 
         .header h1 {
@@ -629,22 +1081,85 @@
 <body>
     <div class="container">
         <div class="header">
+            <!-- Header Controls -->
+            <div class="header-controls">
+                <button id="hamburgerBtn" class="hamburger-btn">☰</button>
+                <button id="profileIcon" class="profile-icon">?</button>
+            </div>
+            
             <h1>🏰 RuneScape 3 Repeatables</h1>
             <p>Track your daily, weekly, and monthly tasks efficiently</p>
-            
-            <!-- User Profile Section -->
-            <div class="profile-section">
-                <div class="profile-controls">
-                    <select id="profileSelect" class="profile-select">
-                        <option value="">Select Profile...</option>
-                    </select>
-                    <button id="createProfileBtn" class="profile-btn">Create Profile</button>
-                    <button id="deleteProfileBtn" class="profile-btn delete-btn" disabled>Delete Profile</button>
+        </div>
+
+        <!-- Hamburger Menu -->
+        <div id="hamburgerMenu" class="hamburger-menu">
+            <div class="hamburger-menu-header">
+                <div class="hamburger-menu-title">Settings & Controls</div>
+                <button id="hamburgerCloseBtn" class="hamburger-close-btn">×</button>
+            </div>
+            <div class="hamburger-menu-content">
+                <div class="hamburger-section">
+                    <h3>Reset Progress</h3>
+                    <div class="hamburger-reset-buttons">
+                        <button class="hamburger-reset-btn" onclick="resetProgress()">Reset All Progress</button>
+                        <button class="hamburger-reset-btn monthly" onclick="resetMonthlyProgress()">Reset Monthlies</button>
+                        <button class="hamburger-reset-btn weekly" onclick="resetWeeklyProgress()">Reset Weeklies</button>
+                        <button class="hamburger-reset-btn daily" onclick="resetDailyProgress()">Reset Dailies</button>
+                    </div>
                 </div>
-                <div id="currentProfile" class="current-profile">
-                    <span>No profile selected</span>
+                
+                <div class="hamburger-section">
+                    <h3>Display Settings</h3>
+                    <div class="hamburger-control-group">
+                        <label for="hamburgerDensitySlider">Task Density</label>
+                        <input type="range" id="hamburgerDensitySlider" class="hamburger-density-slider" min="1" max="5" value="3">
+                        <span id="hamburgerDensityValue">Normal</span>
+                    </div>
+                    <div class="hamburger-control-group">
+                        <label for="hamburgerColumnsSelect">Columns</label>
+                        <select id="hamburgerColumnsSelect" class="hamburger-columns-select">
+                            <option value="1">1 Column</option>
+                            <option value="2">2 Columns</option>
+                            <option value="3">3 Columns</option>
+                            <option value="4">4 Columns</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="hamburger-section">
+                    <h3>Task Hiding</h3>
+                    <div class="hamburger-control-group">
+                        <label>
+                            <input type="checkbox" id="useGlobalHiding"> Use Global Task Hiding
+                        </label>
+                        <small style="color: #7f8c8d; margin-top: 5px; display: block;">
+                            When enabled, hidden tasks apply to all profiles. When disabled, each profile has its own hidden tasks.
+                        </small>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div id="profileDropdown" class="profile-dropdown">
+            <div class="profile-dropdown-header">
+                <div class="profile-dropdown-current">Current Profile:</div>
+                <select id="profileDropdownSelect" class="profile-dropdown-select">
+                    <option value="">Select Profile...</option>
+                </select>
+            </div>
+            <div class="profile-dropdown-actions">
+                <button id="profileDropdownCreate" class="profile-dropdown-btn create">Create</button>
+                <button id="profileDropdownDelete" class="profile-dropdown-btn delete" disabled>Delete</button>
+            </div>
+        </div>
+
+        <!-- Menu Backdrop -->
+        <div id="menuBackdrop" class="menu-backdrop"></div>
+
+        <!-- Task Context Menu -->
+        <div id="taskContextMenu" class="task-context-menu">
+            <div class="task-context-menu-item hide" onclick="hideTask()">Hide Task</div>
         </div>
 
         <div class="progress-section">
@@ -652,30 +1167,8 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="progress-text" id="progressText">0% Complete (0/0 tasks)</div>
-            <div class="reset-buttons">
-                <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
-                <button class="reset-button reset-button-monthly" onclick="resetMonthlyProgress()">Reset Monthlies</button>
-                <button class="reset-button reset-button-weekly" onclick="resetWeeklyProgress()">Reset Weeklies</button>
-                <button class="reset-button reset-button-daily" onclick="resetDailyProgress()">Reset Dailies</button>
-            </div>
         </div>
 
-        <div class="controls-section">
-            <div class="control-group">
-                <label for="densitySlider">Task Density</label>
-                <input type="range" id="densitySlider" class="density-slider" min="1" max="5" value="3" onchange="updateDensity(this.value)">
-                <span id="densityValue">Normal</span>
-            </div>
-            <div class="control-group">
-                <label for="columnsSelect">Columns</label>
-                <select id="columnsSelect" class="columns-select" onchange="updateColumns(this.value)">
-                    <option value="1">1 Column</option>
-                    <option value="2">2 Columns</option>
-                    <option value="3">3 Columns</option>
-                    <option value="4">4 Columns</option>
-                </select>
-            </div>
-        </div>
 
         <div class="content">
             <!-- Monthly Tasks -->
@@ -687,6 +1180,7 @@
                         <span class="reset-timer" id="monthly-timer">Loading...</span>
                     </div>
                     <button class="collapse-toggle" onclick="toggleCollapse('monthly-tasks')">Collapse</button>
+                    <button class="show-hidden-btn" onclick="toggleHiddenTasks('monthly')" id="showHiddenMonthly" style="display: none;">Show Hidden</button>
                 </div>
                 <div id="monthly-tasks" class="collapsible-content">
                     <ul class="task-list">
@@ -752,6 +1246,7 @@
                         <span class="reset-timer" id="weekly-timer">Loading...</span>
                     </div>
                     <button class="collapse-toggle" onclick="toggleCollapse('weekly-tasks')">Collapse</button>
+                    <button class="show-hidden-btn" onclick="toggleHiddenTasks('weekly')" id="showHiddenWeekly" style="display: none;">Show Hidden</button>
                 </div>
                 <div id="weekly-tasks" class="collapsible-content">
                     <ul class="task-list">
@@ -878,6 +1373,7 @@
                         <h2>Daily Tasks</h2>
                         <span class="reset-timer" id="daily-timer">Loading...</span>
                     </div>
+                    <button class="show-hidden-btn" onclick="toggleHiddenTasks('daily')" id="showHiddenDaily" style="display: none;">Show Hidden</button>
                 </div>
 
                 <!-- Time-gated Dailies -->
@@ -1040,6 +1536,7 @@
                     <span class="section-emoji">🏰</span>
                     <h2>Start at Fort Forinthry</h2>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('fort')" id="showHiddenFort" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="fort-challenges">
@@ -1167,6 +1664,7 @@
                     <span class="section-emoji">🐷</span>
                     <h2>Equip POF Gear & Advance Time Runes & TP to Burthorpe</h2>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('pof')" id="showHiddenPof" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="pof-slayer-shop">
@@ -1247,6 +1745,7 @@
                     <span class="section-emoji">🔮</span>
                     <h2>Craft Runes - Equip Normal RC Loadout</h2>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('rc')" id="showHiddenRc" style="display: none;">Show Hidden</button>
                 
                 <div class="subsection">
                     <h3>💰 Profitable Runes</h3>
@@ -1345,6 +1844,7 @@
                     <span class="section-emoji">⛏️</span>
                     <h2>Equip Mining Gear & Resourceful Aura & Premier Porter Buff & Ancient Teleport Seed & Porters</h2>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('mining')" id="showHiddenMining" style="display: none;">Show Hidden</button>
                 
                 <div class="subsection">
                     <h3>🏝️ TP to Oo'glog</h3>
@@ -1433,6 +1933,7 @@
                     <h2>Herb Run</h2>
                     <span class="task-note">(Needs Ironman Information to be added)</span>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('herb')" id="showHiddenHerb" style="display: none;">Show Hidden</button>
                 
                 <div class="subsection">
                     <h3>💰 Profitability Calculator</h3>
@@ -1524,6 +2025,7 @@
                     <span class="section-emoji">💀</span>
                     <h2>Necromancy Run</h2>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('necro')" id="showHiddenNecro" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="necro-lupe">
@@ -1562,6 +2064,7 @@
                     <span class="section-emoji">🛒</span>
                     <h2>Generic Collectibles and Shop Runs</h2>
                 </div>
+                <button class="show-hidden-btn" onclick="toggleHiddenTasks('shop')" id="showHiddenShop" style="display: none;">Show Hidden</button>
                 <ul class="task-list">
                     <li class="task-item">
                         <input type="checkbox" class="task-checkbox" data-task="shop-culinaromancer">
@@ -1664,6 +2167,7 @@
         let currentProfile = null;
         const STORAGE_KEY = 'rs3-repeatables-profiles';
         const LEGACY_KEY = 'rs3-repeatables-progress';
+        const GLOBAL_SETTINGS_KEY = 'rs3-global-settings';
 
         // Timer System
         let timerInterval = null;
@@ -1673,10 +2177,23 @@
             monthly: null
         };
 
+        // Menu System
+        let activeContextMenu = null;
+        let contextMenuTarget = null;
+
+        // Global Settings
+        let globalSettings = {
+            hiddenTasks: [],
+            useGlobalHiding: true,
+            lastResetCheck: { daily: null, weekly: null, monthly: null }
+        };
+
         // Load saved progress when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            initializeGlobalSettings();
             initializeProfileSystem();
             initializeTimerSystem();
+            initializeMenuSystem();
             
             // Add event listeners to all checkboxes
             const checkboxes = document.querySelectorAll('.task-checkbox');
@@ -1691,6 +2208,12 @@
             // Add click event listeners to task items for better UX
             const taskItems = document.querySelectorAll('.task-item');
             taskItems.forEach(taskItem => {
+                // Right-click context menu
+                taskItem.addEventListener('contextmenu', function(event) {
+                    event.preventDefault();
+                    showTaskContextMenu(event, this);
+                });
+
                 taskItem.addEventListener('click', function(event) {
                     // Don't toggle if clicking on links, buttons, or the checkbox itself
                     if (event.target.tagName === 'A' ||
@@ -1735,6 +2258,13 @@
             // Add click event listeners to subtask items
             const subtaskItems = document.querySelectorAll('.subtask-item');
             subtaskItems.forEach(subtaskItem => {
+                // Right-click context menu for subtasks
+                subtaskItem.addEventListener('contextmenu', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    showTaskContextMenu(event, this);
+                });
+
                 subtaskItem.addEventListener('click', function(event) {
                     // Don't toggle if clicking on links, buttons, or the checkbox itself
                     if (event.target.tagName === 'A' ||
@@ -1761,19 +2291,394 @@
                 });
             });
 
-            // Profile system event listeners
-            document.getElementById('profileSelect').addEventListener('change', switchProfile);
-            document.getElementById('createProfileBtn').addEventListener('click', createProfile);
-            document.getElementById('deleteProfileBtn').addEventListener('click', deleteProfile);
+            // Close menus when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.hamburger-menu') && !event.target.closest('#hamburgerBtn')) {
+                    closeHamburgerMenu();
+                }
+                if (!event.target.closest('.profile-dropdown') && !event.target.closest('#profileIcon')) {
+                    closeProfileDropdown();
+                }
+                if (!event.target.closest('.task-context-menu')) {
+                    closeTaskContextMenu();
+                }
+            });
         });
+
+        // Global Settings Functions
+        function initializeGlobalSettings() {
+            const saved = localStorage.getItem(GLOBAL_SETTINGS_KEY);
+            if (saved) {
+                globalSettings = { ...globalSettings, ...JSON.parse(saved) };
+            }
+            
+            // Migrate lastResetCheck from old location
+            const oldResetCheck = localStorage.getItem('rs3-last-reset-check');
+            if (oldResetCheck && !globalSettings.lastResetCheck.daily) {
+                globalSettings.lastResetCheck = JSON.parse(oldResetCheck);
+                saveGlobalSettings();
+                localStorage.removeItem('rs3-last-reset-check');
+            }
+        }
+
+        function saveGlobalSettings() {
+            localStorage.setItem(GLOBAL_SETTINGS_KEY, JSON.stringify(globalSettings));
+        }
+
+        // Menu System Functions
+        function initializeMenuSystem() {
+            // Hamburger menu event listeners
+            document.getElementById('hamburgerBtn').addEventListener('click', toggleHamburgerMenu);
+            document.getElementById('hamburgerCloseBtn').addEventListener('click', closeHamburgerMenu);
+            document.getElementById('menuBackdrop').addEventListener('click', closeAllMenus);
+
+            // Profile dropdown event listeners
+            document.getElementById('profileIcon').addEventListener('click', toggleProfileDropdown);
+            document.getElementById('profileDropdownSelect').addEventListener('change', switchProfileFromDropdown);
+            document.getElementById('profileDropdownCreate').addEventListener('click', createProfileFromDropdown);
+            document.getElementById('profileDropdownDelete').addEventListener('click', deleteProfileFromDropdown);
+
+            // Hamburger menu controls
+            document.getElementById('hamburgerDensitySlider').addEventListener('input', function() {
+                updateDensityFromHamburger(this.value);
+            });
+            document.getElementById('hamburgerColumnsSelect').addEventListener('change', function() {
+                updateColumnsFromHamburger(this.value);
+            });
+            document.getElementById('useGlobalHiding').addEventListener('change', function() {
+                globalSettings.useGlobalHiding = this.checked;
+                saveGlobalSettings();
+                applyTaskHiding();
+            });
+
+            // Initialize hamburger menu values
+            updateHamburgerMenuValues();
+        }
+
+        function toggleHamburgerMenu() {
+            const menu = document.getElementById('hamburgerMenu');
+            const backdrop = document.getElementById('menuBackdrop');
+            
+            if (menu.classList.contains('open')) {
+                closeHamburgerMenu();
+            } else {
+                closeProfileDropdown();
+                menu.classList.add('open');
+                backdrop.classList.add('show');
+                updateHamburgerMenuValues();
+            }
+        }
+
+        function closeHamburgerMenu() {
+            const menu = document.getElementById('hamburgerMenu');
+            const backdrop = document.getElementById('menuBackdrop');
+            menu.classList.remove('open');
+            backdrop.classList.remove('show');
+        }
+
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            
+            if (dropdown.classList.contains('open')) {
+                closeProfileDropdown();
+            } else {
+                closeHamburgerMenu();
+                dropdown.classList.add('open');
+                updateProfileDropdownValues();
+                updateProfileIcon();
+            }
+        }
+
+        function closeProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.remove('open');
+        }
+
+        function closeAllMenus() {
+            closeHamburgerMenu();
+            closeProfileDropdown();
+            closeTaskContextMenu();
+        }
+
+        function updateHamburgerMenuValues() {
+            const profiles = getProfiles();
+            const profile = currentProfile ? profiles[currentProfile] : null;
+            
+            // Update density slider
+            const densitySlider = document.getElementById('hamburgerDensitySlider');
+            const densityValue = document.getElementById('hamburgerDensityValue');
+            const currentDensity = profile?.settings?.density || 3;
+            densitySlider.value = currentDensity;
+            
+            const densityLabels = { 1: 'Very Tight', 2: 'Tight', 3: 'Normal', 4: 'Loose', 5: 'Very Loose' };
+            densityValue.textContent = densityLabels[currentDensity];
+            
+            // Update columns select
+            const columnsSelect = document.getElementById('hamburgerColumnsSelect');
+            const currentColumns = profile?.settings?.columns || 1;
+            columnsSelect.value = currentColumns;
+            
+            // Update global hiding checkbox
+            const globalHidingCheckbox = document.getElementById('useGlobalHiding');
+            globalHidingCheckbox.checked = globalSettings.useGlobalHiding;
+        }
+
+        function updateProfileDropdownValues() {
+            const profiles = getProfiles();
+            const select = document.getElementById('profileDropdownSelect');
+            
+            // Clear and populate dropdown
+            select.innerHTML = '<option value="">Select Profile...</option>';
+            Object.keys(profiles).forEach(profileId => {
+                const option = document.createElement('option');
+                option.value = profileId;
+                option.textContent = profiles[profileId].name;
+                select.appendChild(option);
+            });
+            
+            // Set current selection
+            if (currentProfile) {
+                select.value = currentProfile;
+            }
+            
+            // Update delete button state
+            const deleteBtn = document.getElementById('profileDropdownDelete');
+            deleteBtn.disabled = !currentProfile;
+        }
+
+        function updateProfileIcon() {
+            const profileIcon = document.getElementById('profileIcon');
+            const profiles = getProfiles();
+            
+            if (currentProfile && profiles[currentProfile]) {
+                const profileName = profiles[currentProfile].name;
+                profileIcon.textContent = profileName.charAt(0).toUpperCase();
+                profileIcon.classList.add('active');
+            } else {
+                profileIcon.textContent = '?';
+                profileIcon.classList.remove('active');
+            }
+        }
+
+        function updateDensityFromHamburger(value) {
+            updateDensity(value);
+            saveProfileSettings();
+            
+            // Update display
+            const densityLabels = { 1: 'Very Tight', 2: 'Tight', 3: 'Normal', 4: 'Loose', 5: 'Very Loose' };
+            document.getElementById('hamburgerDensityValue').textContent = densityLabels[value];
+        }
+
+        function updateColumnsFromHamburger(value) {
+            updateColumns(value);
+            saveProfileSettings();
+        }
+
+        function switchProfileFromDropdown() {
+            const select = document.getElementById('profileDropdownSelect');
+            const profileId = select.value;
+            
+            if (profileId) {
+                switchToProfile(profileId);
+            } else {
+                currentProfile = null;
+                localStorage.removeItem('rs3-last-profile');
+                clearAllCheckboxes();
+                updateProgress();
+            }
+            updateProfileIcon();
+            closeProfileDropdown();
+        }
+
+        function createProfileFromDropdown() {
+            createProfile();
+            updateProfileDropdownValues();
+            updateProfileIcon();
+        }
+
+        function deleteProfileFromDropdown() {
+            deleteProfile();
+            updateProfileDropdownValues();
+            updateProfileIcon();
+        }
+
+        // Task Context Menu Functions
+        function showTaskContextMenu(event, taskElement) {
+            const contextMenu = document.getElementById('taskContextMenu');
+            contextMenuTarget = taskElement;
+            
+            // Position the menu
+            contextMenu.style.left = event.pageX + 'px';
+            contextMenu.style.top = event.pageY + 'px';
+            contextMenu.classList.add('show');
+            
+            // Update menu text based on task state
+            const checkbox = taskElement.querySelector('.task-checkbox');
+            const taskId = checkbox?.dataset.task;
+            const isHidden = isTaskHidden(taskId);
+            
+            const hideItem = contextMenu.querySelector('.hide');
+            hideItem.textContent = isHidden ? 'Show Task' : 'Hide Task';
+        }
+
+        function closeTaskContextMenu() {
+            const contextMenu = document.getElementById('taskContextMenu');
+            contextMenu.classList.remove('show');
+            contextMenuTarget = null;
+        }
+
+        function hideTask() {
+            if (!contextMenuTarget) return;
+            
+            const checkbox = contextMenuTarget.querySelector('.task-checkbox');
+            const taskId = checkbox?.dataset.task;
+            
+            if (taskId) {
+                toggleTaskHidden(taskId);
+                applyTaskHiding();
+                updateShowHiddenButtons();
+            }
+            
+            closeTaskContextMenu();
+        }
+
+        // Task Hiding Functions
+        function isTaskHidden(taskId) {
+            if (!taskId) return false;
+            
+            if (globalSettings.useGlobalHiding) {
+                return globalSettings.hiddenTasks.includes(taskId);
+            } else {
+                const profiles = getProfiles();
+                const profile = currentProfile ? profiles[currentProfile] : null;
+                return profile?.settings?.hiddenTasks?.includes(taskId) || false;
+            }
+        }
+
+        function toggleTaskHidden(taskId) {
+            if (!taskId) return;
+            
+            if (globalSettings.useGlobalHiding) {
+                const index = globalSettings.hiddenTasks.indexOf(taskId);
+                if (index > -1) {
+                    globalSettings.hiddenTasks.splice(index, 1);
+                } else {
+                    globalSettings.hiddenTasks.push(taskId);
+                }
+                saveGlobalSettings();
+            } else {
+                if (!currentProfile) return;
+                
+                const profiles = getProfiles();
+                const profile = profiles[currentProfile];
+                if (!profile.settings) profile.settings = {};
+                if (!profile.settings.hiddenTasks) profile.settings.hiddenTasks = [];
+                
+                const index = profile.settings.hiddenTasks.indexOf(taskId);
+                if (index > -1) {
+                    profile.settings.hiddenTasks.splice(index, 1);
+                } else {
+                    profile.settings.hiddenTasks.push(taskId);
+                }
+                saveProfiles(profiles);
+            }
+        }
+
+        function applyTaskHiding() {
+            const allTasks = document.querySelectorAll('.task-item, .subtask-item');
+            
+            allTasks.forEach(taskElement => {
+                const checkbox = taskElement.querySelector('.task-checkbox');
+                const taskId = checkbox?.dataset.task;
+                
+                if (taskId && isTaskHidden(taskId)) {
+                    taskElement.classList.add('hidden');
+                } else {
+                    taskElement.classList.remove('hidden');
+                }
+            });
+            
+            updateProgress();
+        }
+
+        function toggleHiddenTasks(sectionPrefix) {
+            const button = document.getElementById(`showHidden${sectionPrefix.charAt(0).toUpperCase() + sectionPrefix.slice(1)}`);
+            const isShowing = button.classList.contains('active');
+            
+            // Get all hidden tasks in this section
+            const sectionTasks = document.querySelectorAll(`[data-task^="${sectionPrefix}-"]`);
+            const hiddenTasks = Array.from(sectionTasks).filter(checkbox => {
+                const taskId = checkbox.dataset.task;
+                return isTaskHidden(taskId);
+            });
+            
+            hiddenTasks.forEach(checkbox => {
+                const taskElement = checkbox.closest('.task-item, .subtask-item');
+                if (isShowing) {
+                    // Hide them again
+                    taskElement.classList.add('hidden');
+                } else {
+                    // Show them temporarily
+                    taskElement.classList.remove('hidden');
+                }
+            });
+            
+            // Update button state
+            if (isShowing) {
+                button.classList.remove('active');
+                button.textContent = 'Show Hidden';
+            } else {
+                button.classList.add('active');
+                button.textContent = 'Hide Hidden';
+            }
+        }
+
+        function updateShowHiddenButtons() {
+            const sections = ['monthly', 'weekly', 'daily', 'fort', 'pof', 'rc', 'mining', 'herb', 'necro', 'shop'];
+            
+            sections.forEach(section => {
+                const button = document.getElementById(`showHidden${section.charAt(0).toUpperCase() + section.slice(1)}`);
+                if (!button) return;
+                
+                // Check if there are any hidden tasks in this section
+                const sectionTasks = document.querySelectorAll(`[data-task^="${section}-"]`);
+                const hasHiddenTasks = Array.from(sectionTasks).some(checkbox => {
+                    const taskId = checkbox.dataset.task;
+                    return isTaskHidden(taskId);
+                });
+                
+                if (hasHiddenTasks) {
+                    button.style.display = 'inline-block';
+                } else {
+                    button.style.display = 'none';
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        function saveProfileSettings() {
+            if (!currentProfile) return;
+            
+            const profiles = getProfiles();
+            const profile = profiles[currentProfile];
+            if (!profile.settings) profile.settings = {};
+            
+            // Get current density and columns from CSS
+            const root = document.documentElement;
+            const currentDensity = document.getElementById('hamburgerDensitySlider')?.value || 3;
+            const currentColumns = document.getElementById('hamburgerColumnsSelect')?.value || 1;
+            
+            profile.settings.density = parseInt(currentDensity);
+            profile.settings.columns = parseInt(currentColumns);
+            profile.lastUpdated = new Date().toISOString();
+            
+            saveProfiles(profiles);
+        }
 
         // Timer System Functions
         function initializeTimerSystem() {
-            // Load last reset check times
-            const savedResetCheck = localStorage.getItem('rs3-last-reset-check');
-            if (savedResetCheck) {
-                lastResetCheck = JSON.parse(savedResetCheck);
-            }
+            // Use global settings for reset check times
+            lastResetCheck = globalSettings.lastResetCheck;
 
             // Add timer classes to timer elements
             document.getElementById('daily-timer').classList.add('daily');
@@ -1863,40 +2768,122 @@
         }
 
         function checkForAutoResets() {
-            if (!currentProfile) return;
-
             const now = new Date();
             const currentDay = now.toDateString();
             const currentWeek = getWeekKey(now);
             const currentMonth = `${now.getUTCFullYear()}-${now.getUTCMonth()}`;
 
             let resetOccurred = false;
+            let resetTypes = [];
 
             // Check daily reset
             if (lastResetCheck.daily !== currentDay && hasPassedDailyReset(now)) {
-                resetDailyProgress(true);
+                performGlobalReset('daily');
                 lastResetCheck.daily = currentDay;
                 resetOccurred = true;
+                resetTypes.push('daily');
             }
 
             // Check weekly reset
             if (lastResetCheck.weekly !== currentWeek && hasPassedWeeklyReset(now)) {
-                resetWeeklyProgress(true);
+                performGlobalReset('weekly');
                 lastResetCheck.weekly = currentWeek;
                 resetOccurred = true;
+                resetTypes.push('weekly');
             }
 
             // Check monthly reset
             if (lastResetCheck.monthly !== currentMonth && hasPassedMonthlyReset(now)) {
-                resetMonthlyProgress(true);
+                performGlobalReset('monthly');
                 lastResetCheck.monthly = currentMonth;
                 resetOccurred = true;
+                resetTypes.push('monthly');
             }
 
             if (resetOccurred) {
-                localStorage.setItem('rs3-last-reset-check', JSON.stringify(lastResetCheck));
-                showAutoResetNotification();
+                globalSettings.lastResetCheck = lastResetCheck;
+                saveGlobalSettings();
+                showAutoResetNotification(resetTypes);
             }
+        }
+
+        function performGlobalReset(resetType) {
+            const profiles = getProfiles();
+            let affectedProfiles = 0;
+
+            Object.keys(profiles).forEach(profileId => {
+                const profile = profiles[profileId];
+                let tasksReset = false;
+
+                if (resetType === 'daily') {
+                    tasksReset = resetProfileDailyTasks(profile);
+                } else if (resetType === 'weekly') {
+                    tasksReset = resetProfileWeeklyTasks(profile);
+                } else if (resetType === 'monthly') {
+                    tasksReset = resetProfileMonthlyTasks(profile);
+                }
+
+                if (tasksReset) {
+                    profile.lastUpdated = new Date().toISOString();
+                    affectedProfiles++;
+                }
+            });
+
+            if (affectedProfiles > 0) {
+                saveProfiles(profiles);
+                
+                // If current profile was affected, reload the UI
+                if (currentProfile && profiles[currentProfile]) {
+                    loadProgress();
+                    updateProgress();
+                }
+            }
+
+            return affectedProfiles;
+        }
+
+        function resetProfileDailyTasks(profile) {
+            if (!profile.progress) return false;
+            
+            const dailyPrefixes = ['daily-', 'fort-', 'pof-', 'rc-', 'mining-', 'herb-', 'necro-', 'shop-'];
+            let tasksReset = false;
+
+            Object.keys(profile.progress).forEach(taskId => {
+                if (dailyPrefixes.some(prefix => taskId.startsWith(prefix)) && profile.progress[taskId]) {
+                    profile.progress[taskId] = false;
+                    tasksReset = true;
+                }
+            });
+
+            return tasksReset;
+        }
+
+        function resetProfileWeeklyTasks(profile) {
+            if (!profile.progress) return false;
+            
+            let tasksReset = false;
+            Object.keys(profile.progress).forEach(taskId => {
+                if (taskId.startsWith('weekly-') && profile.progress[taskId]) {
+                    profile.progress[taskId] = false;
+                    tasksReset = true;
+                }
+            });
+
+            return tasksReset;
+        }
+
+        function resetProfileMonthlyTasks(profile) {
+            if (!profile.progress) return false;
+            
+            let tasksReset = false;
+            Object.keys(profile.progress).forEach(taskId => {
+                if (taskId.startsWith('monthly-') && profile.progress[taskId]) {
+                    profile.progress[taskId] = false;
+                    tasksReset = true;
+                }
+            });
+
+            return tasksReset;
         }
 
         function hasPassedDailyReset(now) {
@@ -1927,10 +2914,12 @@
             return `${wednesday.getUTCFullYear()}-W${Math.ceil(wednesday.getUTCDate() / 7)}`;
         }
 
-        function showAutoResetNotification() {
+        function showAutoResetNotification(resetTypes = []) {
             const notification = document.createElement('div');
             notification.className = 'auto-reset-notification';
-            notification.textContent = '🔄 Tasks have been automatically reset!';
+            
+            const resetText = resetTypes.length > 0 ? resetTypes.join(', ') : 'tasks';
+            notification.textContent = `🔄 ${resetText} tasks have been automatically reset across all profiles!`;
             document.body.appendChild(notification);
 
             setTimeout(() => notification.classList.add('show'), 100);
@@ -1977,18 +2966,8 @@
         }
 
         function loadProfiles() {
-            const profiles = getProfiles();
-            const select = document.getElementById('profileSelect');
-            
-            // Clear existing options except the first one
-            select.innerHTML = '<option value="">Select Profile...</option>';
-            
-            Object.keys(profiles).forEach(profileId => {
-                const option = document.createElement('option');
-                option.value = profileId;
-                option.textContent = profiles[profileId].name;
-                select.appendChild(option);
-            });
+            // This function is now handled by updateProfileDropdownValues()
+            // Keep for compatibility but don't do anything
         }
 
         function createProfile() {
@@ -2010,6 +2989,11 @@
             profiles[profileId] = {
                 name: trimmedName,
                 progress: {},
+                settings: {
+                    density: 3,
+                    columns: 1,
+                    hiddenTasks: []
+                },
                 created: new Date().toISOString()
             };
 
@@ -2032,11 +3016,8 @@
                 currentProfile = null;
                 localStorage.removeItem('rs3-last-profile');
                 
-                // Reset UI
-                document.getElementById('profileSelect').value = '';
-                document.getElementById('currentProfile').textContent = 'No profile selected';
-                document.getElementById('currentProfile').classList.remove('active');
-                document.getElementById('deleteProfileBtn').disabled = true;
+                // Reset UI - these elements no longer exist in the new design
+                // Profile state is managed through the new dropdown system
                 
                 // Clear all checkboxes
                 clearAllCheckboxes();
@@ -2046,20 +3027,8 @@
         }
 
         function switchProfile() {
-            const select = document.getElementById('profileSelect');
-            const profileId = select.value;
-            
-            if (profileId) {
-                switchToProfile(profileId);
-            } else {
-                currentProfile = null;
-                localStorage.removeItem('rs3-last-profile');
-                document.getElementById('currentProfile').textContent = 'No profile selected';
-                document.getElementById('currentProfile').classList.remove('active');
-                document.getElementById('deleteProfileBtn').disabled = true;
-                clearAllCheckboxes();
-                updateProgress();
-            }
+            // This function is now handled by switchProfileFromDropdown()
+            // Keep for compatibility but don't do anything
         }
 
         function switchToProfile(profileId) {
@@ -2069,15 +3038,38 @@
             currentProfile = profileId;
             localStorage.setItem('rs3-last-profile', profileId);
             
-            // Update UI
-            document.getElementById('profileSelect').value = profileId;
-            document.getElementById('currentProfile').textContent = `Active: ${profiles[profileId].name}`;
-            document.getElementById('currentProfile').classList.add('active');
-            document.getElementById('deleteProfileBtn').disabled = false;
+            // Update UI - handled by updateProfileIcon() and dropdown system
+            updateProfileIcon();
+            
+            // Load profile settings
+            loadProfileSettings(profiles[profileId]);
             
             // Load profile progress
             loadProgress();
+            
+            // Apply task hiding and update UI
+            applyTaskHiding();
+            updateShowHiddenButtons();
             updateProgress();
+            updateProfileIcon();
+        }
+
+        function loadProfileSettings(profile) {
+            if (!profile.settings) return;
+            
+            // Load density setting
+            if (profile.settings.density) {
+                updateDensity(profile.settings.density);
+                const densitySlider = document.getElementById('hamburgerDensitySlider');
+                if (densitySlider) densitySlider.value = profile.settings.density;
+            }
+            
+            // Load columns setting
+            if (profile.settings.columns) {
+                updateColumns(profile.settings.columns);
+                const columnsSelect = document.getElementById('hamburgerColumnsSelect');
+                if (columnsSelect) columnsSelect.value = profile.settings.columns;
+            }
         }
 
         function generateProfileId(name) {
@@ -2138,8 +3130,15 @@
 
         function updateProgress() {
             const checkboxes = document.querySelectorAll('.task-checkbox');
-            const totalTasks = checkboxes.length;
-            const completedTasks = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            // Filter out hidden tasks
+            const visibleCheckboxes = Array.from(checkboxes).filter(checkbox => {
+                const taskElement = checkbox.closest('.task-item, .subtask-item');
+                return !taskElement.classList.contains('hidden');
+            });
+            
+            const totalTasks = visibleCheckboxes.length;
+            const completedTasks = visibleCheckboxes.filter(cb => cb.checked).length;
             const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
             
             document.getElementById('progressFill').style.width = percentage + '%';
@@ -2244,7 +3243,6 @@
 
         function updateDensity(value) {
             const root = document.documentElement;
-            const densityValue = document.getElementById('densityValue');
             
             const densitySettings = {
                 1: { spacing: '4px', padding: '6px', gap: '4px', label: 'Very Tight' },
@@ -2258,7 +3256,12 @@
             root.style.setProperty('--task-spacing', setting.spacing);
             root.style.setProperty('--task-padding', setting.padding);
             root.style.setProperty('--task-gap', setting.gap);
-            densityValue.textContent = setting.label;
+            
+            // Update hamburger menu display if it exists
+            const hamburgerDensityValue = document.getElementById('hamburgerDensityValue');
+            if (hamburgerDensityValue) {
+                hamburgerDensityValue.textContent = setting.label;
+            }
         }
 
         function updateColumns(value) {
