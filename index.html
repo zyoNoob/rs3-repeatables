@@ -454,6 +454,13 @@
             display: none !important;
         }
 
+        /* Temporarily shown hidden tasks with grey tint */
+        .task-item.hidden-but-shown,
+        .subtask-item.hidden-but-shown {
+            background-color: rgba(128, 128, 128, 0.1);
+            border-left: 3px solid rgba(128, 128, 128, 0.3);
+        }
+
         /* Mobile Responsive Styles for new components */
         @media (max-width: 768px) {
             .hamburger-menu {
@@ -755,9 +762,11 @@
 
         .task-checkbox {
             margin-right: 12px;
-            margin-top: 2px;
             cursor: pointer;
             flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            margin-top: 5px;
         }
 
         .task-content {
@@ -2612,8 +2621,10 @@
                 
                 if (taskId && isTaskHidden(taskId)) {
                     taskElement.classList.add('hidden');
+                    taskElement.classList.remove('hidden-but-shown');
                 } else {
                     taskElement.classList.remove('hidden');
+                    taskElement.classList.remove('hidden-but-shown');
                 }
             });
             
@@ -2634,11 +2645,13 @@
             hiddenTasks.forEach(checkbox => {
                 const taskElement = checkbox.closest('.task-item, .subtask-item');
                 if (isShowing) {
-                    // Hide them again
+                    // Hide them again and remove grey tint
                     taskElement.classList.add('hidden');
+                    taskElement.classList.remove('hidden-but-shown');
                 } else {
-                    // Show them temporarily
+                    // Show them temporarily with grey tint
                     taskElement.classList.remove('hidden');
+                    taskElement.classList.add('hidden-but-shown');
                 }
             });
             
@@ -2650,6 +2663,9 @@
                 button.classList.add('active');
                 button.textContent = 'Hide Hidden';
             }
+            
+            // Update progress after changing visibility
+            updateProgress();
         }
 
         function updateShowHiddenButtons() {
@@ -3150,10 +3166,27 @@
         function updateProgress() {
             const checkboxes = document.querySelectorAll('.task-checkbox');
             
-            // Filter out hidden tasks
+            // Filter out hidden tasks and properly handle nested tasks
             const visibleCheckboxes = Array.from(checkboxes).filter(checkbox => {
                 const taskElement = checkbox.closest('.task-item, .subtask-item');
-                return !taskElement.classList.contains('hidden');
+                
+                // Skip if task is hidden (but not temporarily shown)
+                if (taskElement.classList.contains('hidden')) {
+                    return false;
+                }
+                
+                // For parent tasks, only count them if they have no visible children
+                const isParentTask = taskElement.classList.contains('task-item') &&
+                                   taskElement.querySelector('.subtask-list');
+                
+                if (isParentTask) {
+                    const visibleChildren = taskElement.querySelectorAll('.subtask-item:not(.hidden) .task-checkbox');
+                    // Only count parent if it has no visible children (leaf task)
+                    return visibleChildren.length === 0;
+                }
+                
+                // Count all visible subtasks
+                return true;
             });
             
             const totalTasks = visibleCheckboxes.length;
@@ -3193,15 +3226,21 @@
             const parentCheckbox = parentTaskItem.querySelector(':scope > .task-checkbox');
             if (!parentCheckbox) return;
             
-            const allSubtasks = parentTaskItem.querySelectorAll('.subtask-item .task-checkbox');
-            const checkedSubtasks = parentTaskItem.querySelectorAll('.subtask-item .task-checkbox:checked');
+            // Only consider visible subtasks for parent completion logic
+            const allVisibleSubtasks = parentTaskItem.querySelectorAll('.subtask-item:not(.hidden) .task-checkbox');
+            const checkedVisibleSubtasks = parentTaskItem.querySelectorAll('.subtask-item:not(.hidden) .task-checkbox:checked');
             
-            // If all subtasks are checked, check the parent
-            // If no subtasks are checked, uncheck the parent
+            // If no visible subtasks, leave parent state unchanged
+            if (allVisibleSubtasks.length === 0) {
+                return;
+            }
+            
+            // If all visible subtasks are checked, check the parent
+            // If no visible subtasks are checked, uncheck the parent
             // If some are checked, leave parent as is (could be enhanced with indeterminate state)
-            if (checkedSubtasks.length === allSubtasks.length) {
+            if (checkedVisibleSubtasks.length === allVisibleSubtasks.length) {
                 parentCheckbox.checked = true;
-            } else if (checkedSubtasks.length === 0) {
+            } else if (checkedVisibleSubtasks.length === 0) {
                 parentCheckbox.checked = false;
             }
             
